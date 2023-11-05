@@ -37,5 +37,10 @@ def create_graph_high(company_name, company_list):
         plt.title(f"High Price of {company_name[i - 1]}")
         
     plt.tight_layout()
-
+    
+    plt.savefig('graph_high_price.png') 
     plt.show()
+    
+
+
+    
