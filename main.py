@@ -1,5 +1,6 @@
-from data_processing import get_data
-from data_processing import create_graph_high
+from data_processing import get_df
+from data_processing import create_graph_close
+from data_processing import modify_df
 from datetime import datetime
 
 def main():
@@ -8,13 +9,12 @@ def main():
     end = datetime(2023, 10, 30)
     start = datetime(2023, 9, 30)
 
-    data, company_list = get_data(stock_list, company_name, start, end)
+    df, company_list = get_df(stock_list, company_name, start, end)
 
-    print(data.head())
-    data.info()
+    create_graph_close(company_name, company_list)
 
-    create_graph_high(company_name, company_list)
-    
+    new_data, training_data_len = modify_df(df, 0.8) # training_dataset_percentage = 0.8
+
 
 if __name__ == '__main__':
     main()
