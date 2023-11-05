@@ -6,7 +6,7 @@ import numpy as np
 import seaborn as sns
 from datetime import datetime
 
-def get_data(stock_list, start, end):
+def get_data(stock_list, company_name, start, end):
     # Get data from Yahoo Finance
     yf.pdr_override()
 
@@ -17,16 +17,15 @@ def get_data(stock_list, start, end):
     
 
     company_list = [data['AAPL'], data['MSFT'], data['GOOG'], data['AMZN']]
-    company_name = ["APPLE", "GOOGLE", "MICROSOFT", "AMAZON"]
 
     for company, com_name in zip(company_list, company_name):
         company["company_name"] = com_name
         
     df = pd.concat(company_list, axis=0)
-    return df
+    return (df, company_list)
 
 
-'''def create_graph_high():
+def create_graph_high(company_name, company_list):
     plt.figure(figsize=(15, 10))
     plt.subplots_adjust(top=1.25, bottom=1.2)
 
@@ -35,7 +34,8 @@ def get_data(stock_list, start, end):
         company['High'].plot()
         plt.ylabel('High Price')
         plt.xlabel(None)
-        plt.title(f"High Price of {tech_list[i - 1]}")
+        plt.title(f"High Price of {company_name[i - 1]}")
         
     plt.tight_layout()
-'''
+
+    plt.show()
