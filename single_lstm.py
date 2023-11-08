@@ -18,7 +18,7 @@ def get_df_singular():
     stock = 'AAPL'
     company_name = 'APPLE'
     end = datetime(2022, 10, 30)
-    start = datetime(2022, 5, 30)
+    start = datetime(2012, 5, 30)
 
     data[stock] = yf.download(stock, start, end)
     
@@ -71,26 +71,36 @@ def modify_df_singular(df, training_dataset_percentage, x_train_len):
     # Reshape the data
     x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1 ))
 
-    return x_train, y_train, x_test, y_test
+    return x_train, y_train, x_test, y_test, scaler
 
 
-def single_lstm_model(x_train, y_train, x_test, y_test):
+def single_lstm_model(x_train, y_train):
     model = Sequential()
     model.add(LSTM(128, return_sequences=True, input_shape= (x_train.shape[1], 1)))
     model.add(LSTM(64, return_sequences=False))
     model.add(Dense(25))
     model.add(Dense(1))
+    
 
     # Compile the model
     model.compile(optimizer='adam', loss='mean_squared_error')
 
     # Train the model
     model.fit(x_train, y_train, batch_size=1, epochs=1)
- 
+
     return model
 
 
+def predict_singular(model, x_test, y_test, scaler):
+     
+    # Get the models predicted price values 
+    predictions = model.predict(x_test)
+    predictions = scaler.inverse_transform(predictions)
 
+    # Get the root mean squared error (RMSE)
+    rmse = np.sqrt(np.mean(((predictions - y_test) ** 2)))
+
+    return predictions, rmse
 
 
 
