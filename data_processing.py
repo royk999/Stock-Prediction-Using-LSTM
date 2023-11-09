@@ -22,8 +22,20 @@ def get_df(stock_list, company_name, start, end):
     for company, com_name in zip(company_list, company_name):
         company["company_name"] = com_name
         
-    df = pd.concat(company_list, axis=0)
-    return (df, company_list)
+    return company_list
+
+    
+def modify_df(company_list, training_dataset_percentage):
+    # Create a new dataframe with only the 'Close' column
+    dataset = []
+
+    for company in company_list:
+        dataset.append(company.filter(['Close']).values)
+    
+    training_data_len = int(np.ceil(len(dataset[0]) * training_dataset_percentage))
+    
+    print(f"training_data_len: {training_data_len}")
+
 
 def create_graph_close(company_name, company_list):
     plt.figure(figsize=(15, 10))
@@ -60,16 +72,3 @@ def create_graph_delta(company_name, company_list):
     plt.tight_layout()
     
     plt.savefig('graph_apple_delta.png') # Save graph as png file
-
-    
-def modify_df(df, training_dataset_percentage):
-    # Create a new dataframe with only the 'Close' column
-    data = df.filter(['Close'])
-    dataset = data.values
-    training_data_len = int(np.ceil(len(dataset) * training_dataset_percentage))
-
-    # Scale the data using MinMaxScaler
-    scaler = MinMaxScaler(feature_range=(0, 1))
-    scaled_data = scaler.fit_transform(dataset)
-
-    return scaled_data, training_data_len

@@ -9,7 +9,7 @@ from sklearn.preprocessing import MinMaxScaler # for data scaling
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 
-def get_df_singular():
+def get_df_singular(start, end):
     # Get data from Yahoo Finance
     yf.pdr_override()
 
@@ -17,8 +17,6 @@ def get_df_singular():
 
     stock = 'AAPL'
     company_name = 'APPLE'
-    end = datetime(2022, 10, 30)
-    start = datetime(2012, 5, 30)
 
     data[stock] = yf.download(stock, start, end)
     
@@ -91,16 +89,34 @@ def single_lstm_model(x_train, y_train):
     return model
 
 
-def predict_singular(model, x_test, y_test, scaler):
-     
+def predict_singular(model, x_test, scaler):
     # Get the models predicted price values 
     predictions = model.predict(x_test)
     predictions = scaler.inverse_transform(predictions)
 
-    # Get the root mean squared error (RMSE)
-    rmse = np.sqrt(np.mean(((predictions - y_test) ** 2)))
+    return predictions
 
-    return predictions, rmse
 
+def analyze_singular(y_test, predictions):
+    #turn y_test into a dataframe
+    y_test = pd.DataFrame(y_test)
+    predictions = pd.DataFrame(predictions)
+    rmse = np.sqrt(np.mean(predictions - y_test)**2)
+
+    y_test_delta = y_test.diff(1)
+    predictions_delta = predictions.diff(1)
+    rmse_1 = np.sqrt(np.mean(predictions_delta - y_test_delta)**2)
+
+    print(f'RMSE: {rmse}')
+    print(f'RMSE_1: {rmse_1}')
+    
+    plt.plot(y_test_delta, label='Actual')
+    plt.plot(predictions_delta, label='Predicted')
+    plt.legend()
+    plt.title(f'Single_LSTM_Delta(1)')
+    plt.xlabel('Date from 2020-10-30 (days)')
+    plt.ylabel('Close Price ($)')
+    # Save graph as png file in a folder named images
+    plt.savefig('images/results_singular_model_delta(1).png')
 
 
