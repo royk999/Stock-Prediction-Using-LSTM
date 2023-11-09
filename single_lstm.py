@@ -16,15 +16,15 @@ def get_df_singular(start, end):
     data = {}
 
     stock = 'AAPL'
-    company_name = 'APPLE'
+    stock_name = 'APPLE'
 
     data[stock] = yf.download(stock, start, end)
     
 
     company_list = [data['AAPL']]
 
-    for company, com_name in zip(company_list, company_name):
-        company["company_name"] = com_name
+    for company, com_name in zip(company_list, stock_name):
+        company["stock_name"] = com_name
         
     df = pd.concat(company_list, axis=0)
     return df

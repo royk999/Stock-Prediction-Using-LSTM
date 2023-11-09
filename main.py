@@ -2,6 +2,7 @@ from data_processing import get_df
 from data_processing import create_graph_close
 from data_processing import modify_df
 from data_processing import create_graph_delta
+from data_processing import create_graph_correlation
 
 from single_lstm import get_df_singular
 from single_lstm import modify_df_singular
@@ -31,25 +32,24 @@ def singular_model():
 
 
 def data_analysis(): 
-    stock_list = ['AAPL', 'MSFT', 'GOOG', 'AMZN']
-    company_name = ['APPLE', 'MICROSOFT', 'GOOGLE', 'AMAZON']
+    stock_name = ['AAPL', 'MSFT', 'GOOG', 'AMZN', '^IXIC', '^GSPC', '^DJI']
     end = datetime(2023, 10, 30)
-    start = datetime(2020, 10, 30)
+    start = datetime(2012, 10, 30)
 
-    company_list = get_df(stock_list, company_name, start, end)
+    stock_list = get_df(stock_name, start, end)
 
-    create_graph_close(company_name, company_list)
-
-    create_graph_delta(company_name, company_list)
+    #create_graph_close(stock_name, stock_list)
+    #create_graph_delta(stock_name, stock_list)
+    create_graph_correlation(stock_name, stock_list)
 
     
 def multi_model():
     stock_list = ['AAPL', 'MSFT', 'GOOG', 'AMZN']
-    company_name = ['APPLE', 'MICROSOFT', 'GOOGLE', 'AMAZON']
+    stock_name = ['APPLE', 'MICROSOFT', 'GOOGLE', 'AMAZON']
     end = datetime(2023, 10, 30)
     start = datetime(2022, 10, 30)
 
-    company_list = get_df(stock_list, company_name, start, end)
+    company_list = get_df(stock_list, stock_name, start, end)
 
     df = modify_df(company_list, 0.8)
 
@@ -58,9 +58,9 @@ def multi_model():
 
 
 def main():
-    #data_analysis()
+    data_analysis()
     #singular_model()
-    multi_model()
+    #multi_model()
 
 if __name__ == '__main__':
     main()
