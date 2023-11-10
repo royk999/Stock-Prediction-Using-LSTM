@@ -55,7 +55,7 @@ def modify_df_single_delta(df, training_dataset_percentage, x_train_len):
 
     return x_train, y_train, x_test, y_test, scaler
 
-def single_delta_model_train(x_train, y_train):
+def single_delta_model_train(x_train, y_train, features_lstm = 128, feature_dense = 25, epochs=1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     if np.any(np.isnan(x_train)) or np.any(np.isnan(y_train)):
         print("NaN values found in training data. Please clean your data.")
         return None
@@ -63,16 +63,14 @@ def single_delta_model_train(x_train, y_train):
         print("Inf values found in training data. Please clean your data.")
         return None
 
-    
     model = Sequential()
-    model.add(LSTM(128, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-    model.add(LSTM(64, return_sequences=False))
-    model.add(Dense(25))
+    model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], 1)))
+    model.add(Dense(feature_dense))
     model.add(Dense(1))
     
 
     # Compile the model
-    optimizer = Adam(learning_rate=0.001, clipvalue=1.0)
+    optimizer = Adam(learning_rate=learning_rate, clipvalue=clipvalue)
     model.compile(optimizer=optimizer, loss='mean_squared_error')
 
     # Train the model
@@ -89,8 +87,16 @@ def predict_single_delta(model, x_test, scaler):
     return predictions
 
 def analyze_single_delta(y_test, predictions):
-    rmse = np.sqrt(np.mean(predictions - y_test)**2)
+    rmse = 0
+    sz = len(predictions)
+    for i in range(sz):
+        rmse += (predictions[i] - y_test[i]) ** 2
+    rmse = np.sqrt(rmse / sz)
+
     print(f'Root Mean Square Error: {rmse}')
+    #write rmse to file named results_single_delta_model.txt in results folder
+    with open('results/results_single_delta_model.txt', 'w') as f:
+        f.write(f'Root Mean Square Error: {rmse}\n')
 
     plt.plot(y_test, label='Actual')
     plt.plot(predictions, label='Predicted')
@@ -98,4 +104,4 @@ def analyze_single_delta(y_test, predictions):
     plt.title('Single Delta LSTM Model')
     plt.xlabel('Date from 2020-10-30 (days)')
     plt.ylabel('Close Price ($)')    
-    plt.savefig('images/results_single_model_delta(1).png')
+    plt.savefig('images/results_single_delta_model_predicting_delta(1).png')

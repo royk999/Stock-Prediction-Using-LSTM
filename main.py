@@ -18,9 +18,10 @@ from single_delta_lstm import analyze_single_delta
 
 from datetime import datetime
 from tensorflow.keras.models import load_model
+import pandas as pd
 
 def data_analysis(): 
-    stock_name = ['AAPL', 'MSFT', 'GOOG', 'AMZN', '^IXIC', '^GSPC', '^DJI']
+    stock_name = ['AAPL', 'MSFT', 'GOOG', '^IXIC']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
 
@@ -32,11 +33,18 @@ def data_analysis():
     #for stock, stock_name in zip(stock_list, stock_name):
     #    stock.to_csv(f'datasets/{stock_name}.csv')
 
-
     #create_graph_close(stock_name, stock_list)
     #create_graph_delta(stock_name, stock_list)
+
+    combined_list = []
+    combined_name = ['AAPL', 'AAPL_D', 'MSFT', 'MSFT_D', 'GOOG', 'GOOG_D', 'NASDAQ', 'NASDAQ_D']
+    for stock, delta in zip(stock_list, delta_1_list):
+        combined_list.append(stock)
+        combined_list.append(delta)
+    
     create_graph_correlation(stock_name, stock_list, "Closing Price Correlation")
     create_graph_correlation(stock_name, delta_1_list, "Delta 1 Correlation")
+    create_graph_correlation(combined_name, combined_list, 'Combined Correlation')
 
 def single_model():
     end = datetime(2022, 10, 30)
@@ -45,11 +53,11 @@ def single_model():
     df = get_df_singular(stock_name, start, end)
     x_train, y_train, x_test, y_test, scalar = modify_df_singular(df, 0.8, 60) # training_dataset_percentage = 0.8, x_train_len = 60
     
-    model = single_model_train(x_train, y_train)
-    model.save('single_model.keras') # save the model to a file
+    #model = single_model_train(x_train, y_train)
+    #model.save('single_model.keras') # save the model to a file
 
-    #model_path = 'model_trained/single_model.keras'
-    #model = load_model(model_path)
+    model_path = 'model_trained/single_model.keras'
+    model = load_model(model_path)
 
     predictions = predict_singular(model, x_test, scalar)
 
@@ -60,7 +68,7 @@ def single_delta_model():
     start = datetime(2012, 5, 30)
     stock_name = "AAPL"
     df = get_df_singular(stock_name, start, end)
-    x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.95, x_train_len=60) # training_dataset_percentage, x_train_len = 60
+    x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.8, x_train_len=60) # training_dataset_percentage, x_train_len = 60
     model = single_delta_model_train(x_train, y_train)
     model.save('model_trained/single_delta_model.keras') # save the model to a file
 

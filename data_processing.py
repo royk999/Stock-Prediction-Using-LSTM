@@ -28,7 +28,9 @@ def delta_df(stock_list, stock_name, delta_num):
 
     for stock in stock_list:
         delta_list.append(pd.DataFrame(stock['Close'].diff(delta_num)))
-    
+        #set all nan values to zeroes
+        delta_list[-1] = delta_list[-1].fillna(0)
+        
     for delta, stock_name in zip(delta_list, stock_name):
         delta["stock_name"] = stock_name
 

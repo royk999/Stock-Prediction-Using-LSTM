@@ -96,13 +96,23 @@ def analyze_singular(y_test, predictions):
 
     y_test_delta = y_test.diff(1)
     predictions_delta = predictions.diff(1)
-    rmse_1 = np.sqrt(np.mean(predictions_delta - y_test_delta)**2)
+
+    # change nan values to 0 
+    y_test_delta = y_test_delta.fillna(0)
+    predictions_delta = predictions_delta.fillna(0)
+
+    sz = y_test_delta.shape[0]
+    rmse_1 = 0.0
+    for i in range(sz):
+        rmse_1 = rmse_1 + (predictions_delta.iloc[i, 0] - y_test_delta.iloc[i, 0])**2
+
+    rmse_1 = np.sqrt(rmse_1/sz)
 
     print(f'RMSE: {rmse}')
     print(f'RMSE_1: {rmse_1}')
 
     with open('results/results_single_model.txt', 'w') as f:
-        f.write(f'RMSE_original: {rmse}')
+        f.write(f'RMSE_original: {rmse}\n')
         f.write(f'RMSE_delta_1: {rmse_1}')
     
     plt.plot(y_test_delta, label='Actual')
