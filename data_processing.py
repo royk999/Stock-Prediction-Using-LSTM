@@ -86,8 +86,7 @@ def create_graph_delta(stock_name, company_list):
 def create_graph_correlation(stock_name, data_list, figure_name):
     plt.figure(figsize=(10, 8))
     sns.heatmap(pd.concat([data_list[i]['Close'] for i in range(len(data_list))], axis=1).corr(), annot=True)
-    plt.xticks(range(len(stock_name)), stock_name)
-    plt.yticks(range(len(stock_name)), stock_name)
+    plt.xticks(range(len(stock_name)), stock_name, rotation=45, ha='right')
+    plt.yticks(range(len(stock_name)), stock_name, rotation=0)
     plt.title(f'{figure_name}')
     plt.savefig(f'images/{figure_name}.png')    
-

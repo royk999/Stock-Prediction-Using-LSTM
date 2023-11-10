@@ -38,11 +38,13 @@ def data_analysis():
     start = datetime(2012, 10, 30)
 
     stock_list = get_df(stock_name, start, end)
+
     delta_1_list = delta_df(stock_list, stock_name, 1)
 
     # Save stock_list and delta_1_list as csv files in datasets folder
     for stock, stock_name in zip(stock_list, stock_name):
         stock.to_csv(f'datasets/{stock_name}.csv')
+
 
     #create_graph_close(stock_name, stock_list)
     #create_graph_delta(stock_name, stock_list)
