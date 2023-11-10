@@ -13,7 +13,6 @@ def get_df(stock_name, start, end):
 
     data = {}
 
-
     for stock in stock_name:
         data[stock] = yf.download(stock, start, end)
 
@@ -24,6 +23,16 @@ def get_df(stock_name, start, end):
         
     return stock_list
 
+def delta_df(stock_list, stock_name, delta_num):
+    delta_list = []
+
+    for stock in stock_list:
+        delta_list.append(pd.DataFrame(stock['Close'].diff(delta_num)))
+    
+    for delta, stock_name in zip(delta_list, stock_name):
+        delta["stock_name"] = stock_name
+
+    return delta_list
     
 def modify_df(company_list, training_dataset_percentage):
     # Create a new dataframe with only the 'Close' column
@@ -74,14 +83,11 @@ def create_graph_delta(stock_name, company_list):
     plt.savefig('images/graph_apple_delta.png') # Save graph as png file
 
 
-def create_graph_correlation(stock_name, company_list):
+def create_graph_correlation(stock_name, data_list, figure_name):
     plt.figure(figsize=(10, 8))
-    sns.heatmap(pd.concat([company_list[i]['Close'] for i in range(len(company_list))], axis=1).corr(), annot=True)
-    plt.title('Correlation between Companies')
+    sns.heatmap(pd.concat([data_list[i]['Close'] for i in range(len(data_list))], axis=1).corr(), annot=True)
     plt.xticks(range(len(stock_name)), stock_name)
     plt.yticks(range(len(stock_name)), stock_name)
-    plt.savefig('images/graph_correlation.png')    
+    plt.title(f'{figure_name}')
+    plt.savefig(f'images/{figure_name}.png')    
 
-    
-    
-    

@@ -3,6 +3,7 @@ from data_processing import create_graph_close
 from data_processing import modify_df
 from data_processing import create_graph_delta
 from data_processing import create_graph_correlation
+from data_processing import delta_df
 
 from single_lstm import get_df_singular
 from single_lstm import modify_df_singular
@@ -37,10 +38,16 @@ def data_analysis():
     start = datetime(2012, 10, 30)
 
     stock_list = get_df(stock_name, start, end)
+    delta_1_list = delta_df(stock_list, stock_name, 1)
+
+    # Save stock_list and delta_1_list as csv files in datasets folder
+    for stock, stock_name in zip(stock_list, stock_name):
+        stock.to_csv(f'datasets/{stock_name}.csv')
 
     #create_graph_close(stock_name, stock_list)
     #create_graph_delta(stock_name, stock_list)
-    create_graph_correlation(stock_name, stock_list)
+    create_graph_correlation(stock_name, stock_list, "Closing Price Correlation")
+    create_graph_correlation(stock_name, delta_1_list, "Delta 1 Correlation")
 
     
 def multi_model():
@@ -52,10 +59,6 @@ def multi_model():
     company_list = get_df(stock_list, stock_name, start, end)
 
     df = modify_df(company_list, 0.8)
-
-
-    
-
 
 def main():
     data_analysis()
