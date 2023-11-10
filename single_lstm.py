@@ -9,27 +9,21 @@ from sklearn.preprocessing import MinMaxScaler # for data scaling
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 
-def get_df_singular(start, end):
+def get_df_singular(stock_name, start, end):
     # Get data from Yahoo Finance
     yf.pdr_override()
 
     data = {}
 
-    stock = 'AAPL'
-    stock_name = 'APPLE'
+    stock_name = 'AAPL'
 
-    data[stock] = yf.download(stock, start, end)
+    data[stock_name] = yf.download(stock_name, start, end)
     
-
     company_list = [data['AAPL']]
-
-    for company, com_name in zip(company_list, stock_name):
-        company["stock_name"] = com_name
+    company_list[0]["stock_name"] = stock_name
         
     df = pd.concat(company_list, axis=0)
     return df
-
-
 
 def modify_df_singular(df, training_dataset_percentage, x_train_len):
     # Create a new dataframe with only the 'Close' column
@@ -71,8 +65,7 @@ def modify_df_singular(df, training_dataset_percentage, x_train_len):
 
     return x_train, y_train, x_test, y_test, scaler
 
-
-def single_lstm_model(x_train, y_train):
+def single_model_train(x_train, y_train):
     model = Sequential()
     model.add(LSTM(128, return_sequences=True, input_shape= (x_train.shape[1], 1)))
     model.add(LSTM(64, return_sequences=False))
@@ -88,14 +81,12 @@ def single_lstm_model(x_train, y_train):
 
     return model
 
-
 def predict_singular(model, x_test, scaler):
     # Get the models predicted price values 
     predictions = model.predict(x_test)
     predictions = scaler.inverse_transform(predictions)
 
     return predictions
-
 
 def analyze_singular(y_test, predictions):
     #turn y_test into a dataframe
@@ -109,14 +100,18 @@ def analyze_singular(y_test, predictions):
 
     print(f'RMSE: {rmse}')
     print(f'RMSE_1: {rmse_1}')
+
+    with open('results/results_single_model.txt', 'w') as f:
+        f.write(f'RMSE_original: {rmse}')
+        f.write(f'RMSE_delta_1: {rmse_1}')
     
     plt.plot(y_test_delta, label='Actual')
     plt.plot(predictions_delta, label='Predicted')
     plt.legend()
-    plt.title(f'Single_LSTM_Delta(1)')
+    plt.title(f'Single_Model_Delta(1)')
     plt.xlabel('Date from 2020-10-30 (days)')
     plt.ylabel('Close Price ($)')
     # Save graph as png file in a folder named images
-    plt.savefig('images/results_singular_model_delta(1).png')
+    plt.savefig('images/results_single_model_delta(1).png')
 
 

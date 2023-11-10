@@ -45,7 +45,6 @@ def modify_df(company_list, training_dataset_percentage):
     
     print(f"training_data_len: {training_data_len}")
 
-
 def create_graph_close(stock_name, company_list):
     plt.figure(figsize=(15, 10))
     plt.subplots_adjust(top=1.25, bottom=1.2)
@@ -81,7 +80,6 @@ def create_graph_delta(stock_name, company_list):
     plt.tight_layout()
     
     plt.savefig('images/graph_apple_delta.png') # Save graph as png file
-
 
 def create_graph_correlation(stock_name, data_list, figure_name):
     plt.figure(figsize=(10, 8))
