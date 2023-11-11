@@ -111,7 +111,7 @@ def analyze_singular(y_test, predictions):
     print(f'RMSE: {rmse}')
     print(f'RMSE_1: {rmse_1}')
 
-    with open('results/results_single_model.txt', 'w') as f:
+    with open('results/results_single_model.txt', 'a') as f:
         f.write(f'RMSE_original: {rmse}\n')
         f.write(f'RMSE_delta_1: {rmse_1}')
     

@@ -69,7 +69,15 @@ def single_delta_model():
     stock_name = "AAPL"
     df = get_df_singular(stock_name, start, end)
     x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.8, x_train_len=60) # training_dataset_percentage, x_train_len = 60
-    model = single_delta_model_train(x_train, y_train)
+
+    model_params = {
+        'epochs': 1,
+        'batch_size': 1,
+        'learning_rate': 0.001,
+        'clipvalue': 1.0
+    }
+
+    model = single_delta_model_train(x_train, y_train, **model_params)
     model.save('model_trained/single_delta_model.keras') # save the model to a file
 
     #model_path = 'model_trained/single_delta_model.keras'
@@ -77,7 +85,7 @@ def single_delta_model():
 
     predictions = predict_single_delta(model, x_test, scalar)
     
-    analyze_single_delta(y_test, predictions)
+    analyze_single_delta(y_test, predictions, **model_params)
 
 def multi_model():
     stock_list = ['AAPL', 'MSFT', 'GOOG', 'AMZN']

@@ -1,1 +1,2 @@
-Root Mean Square Error: [2.82170255]
+rmse: [2.81863181] - features_lstm: 128, feature_dense: 25, optimizer: Adam, epochs: 1, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.83960956] - features_lstm: 128, feature_dense: 25, optimizer: Adam, epochs: 3, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
