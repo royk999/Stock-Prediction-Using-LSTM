@@ -16,6 +16,10 @@ from single_delta_lstm import single_delta_model_train
 from single_delta_lstm import predict_single_delta
 from single_delta_lstm import analyze_single_delta
 
+from multi_lstm import multi_model_train
+from multi_lstm import predict_multi_model
+from multi_lstm import analyze_multi
+
 from datetime import datetime
 from tensorflow.keras.models import load_model
 import pandas as pd
@@ -100,16 +104,43 @@ def multi_model():
 
     combined_list = []
     for stock, delta in zip(stock_list, delta_1_list):
-        combined_list.append(stock)
-        combined_list.append(delta)
+        combined_list.append(stock.filter(['Close']))
+        combined_list.append(delta.filter(['Close']))
 
-    x_train, y_train, x_test, y_test, scalar = modify_df(combined_list, training_dataset_percentage=0.8, x_train_len=60)
+    apple_delta = delta_1_list[0].filter(['Close'])
+
+    x_train, y_train, x_test, y_test, scalar = modify_df(combined_list, apple_delta, training_dataset_percentage=0.8, x_train_len=60)
+    print(f'y_train: {y_train}')
+    print(f'y_test: {y_test}')
+
+
+    model_params = {
+        'features_lstm': 10,
+        'max_epochs': 20,
+        'batch_size': 5,
+        'learning_rate': 0.001,
+        'clipvalue': 1.0,
+        'optimizer' : 'Adagrad'
+    }
+
+    model = multi_model_train(x_train, y_train, **model_params)
+
+    #save the model in results
+    model.save('model_trained/multi_model.keras')
+
+    #model_path = 'model_trained/multi_model.keras'
+    #model = load_model(model_path)
+
+    predictions = predict_multi_model(model, x_test, scalar)
+
+    analyze_multi(y_test, predictions, **model_params)
+
 
 def main():
     #data_analysis()
     #single_model()
-    single_delta_model()
-    #multi_model()
+    #single_delta_model()
+    multi_model()
 
 if __name__ == '__main__':
     main()

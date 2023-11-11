@@ -1,0 +1,13 @@
+rmse: [0.73031962] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.35143124] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.69020292] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.17779465] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.23565185] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.29357054] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.68752993] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.05569456] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.38430767] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.31883518] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.32294532] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.33628454] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.34906562] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0

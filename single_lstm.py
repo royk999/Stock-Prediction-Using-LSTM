@@ -29,6 +29,8 @@ def modify_df_singular(df, training_dataset_percentage, x_train_len):
     # Create a new dataframe with only the 'Close' column
     data = df.filter(['Close'])
     dataset = data.values
+
+    print(f'type of dataset: {type(dataset)}')
     training_data_len = int(np.ceil(len(dataset) * training_dataset_percentage))
 
     # Scale the data using MinMaxScaler

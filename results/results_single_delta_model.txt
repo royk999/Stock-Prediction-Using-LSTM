@@ -12,3 +12,4 @@ rmse: [2.79760615] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batc
 rmse: [2.83190843] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
 rmse: [2.7921758] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
 rmse: [2.80239303] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.8039389] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 10, learning_rate: 0.001, clipvalue: 1.0

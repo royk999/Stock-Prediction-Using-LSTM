@@ -11,6 +11,8 @@ Apple Opening Price, Closing Price - Opening Price
 MADA
 Nasdaq
 CBOE Volatility Index (VIX)
+DX-Y.NYB (Dollar index)
+
 
 # Hyperparameter Tuning
 This project compared rmse errors to find the best hyperparameters that work the best. First, hyperparameters for training process was tuned. Then, the parameters for the neural network itself was tuned. 
