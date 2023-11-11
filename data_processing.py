@@ -36,16 +36,38 @@ def delta_df(stock_list, stock_name, delta_num):
 
     return delta_list
     
-def modify_df(company_list, training_dataset_percentage):
+def modify_df(stock_list, training_dataset_percentage, x_train_len):
     # Create a new dataframe with only the 'Close' column
-    dataset = []
+    data = stock_list.filter(['Close'])
+    dataset = data.values
+    training_data_len = int(np.ceil(len(dataset) * training_dataset_percentage))
 
-    for company in company_list:
-        dataset.append(company.filter(['Close']).values)
-    
-    training_data_len = int(np.ceil(len(dataset[0]) * training_dataset_percentage))
-    
-    print(f"training_data_len: {training_data_len}")
+    # Scale the data using MinMaxScaler
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaled_data = scaler.fit_transform(dataset)
+
+    training_data = scaled_data[0:training_data_len, :]
+    x_train = []
+    y_train = []
+
+    for i in range(x_train_len, training_data_len):
+        x_train.append(training_data[i - x_train_len:i, :])
+        y_train.append(training_data[i, 0])
+        
+    x_train, y_train = np.array(x_train), np.array(y_train)
+
+    # Create the testing data set
+    test_data = scaled_data[training_data_len - x_train_len: , :]
+    x_test = []
+    y_test = dataset[training_data_len:, :]
+    for i in range(x_train_len, len(test_data)):
+        x_test.append(test_data[i-x_train_len:i, :])
+        
+    # Convert the data to a numpy array
+    x_test = np.array(x_test)
+
+    return x_train, y_train, x_test, y_test, scaler
+
 
 def create_graph_close(stock_name, company_list):
     plt.figure(figsize=(15, 10))

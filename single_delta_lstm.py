@@ -8,6 +8,7 @@ from sklearn.preprocessing import MinMaxScaler # for data scaling
 from tensorflow.keras.optimizers import Adam
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
+from keras.callbacks import EarlyStopping
 
 
 def modify_df_single_delta(df, training_dataset_percentage, x_train_len):
@@ -55,7 +56,7 @@ def modify_df_single_delta(df, training_dataset_percentage, x_train_len):
 
     return x_train, y_train, x_test, y_test, scaler
 
-def single_delta_model_train(x_train, y_train, features_lstm = 128, features_dense = 25, optimizer = 'Adam', epochs=1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def single_delta_model_train(x_train, y_train, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs=20, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     if np.any(np.isnan(x_train)) or np.any(np.isnan(y_train)):
         print("NaN values found in training data. Please clean your data.")
         return None
@@ -64,17 +65,15 @@ def single_delta_model_train(x_train, y_train, features_lstm = 128, features_den
         return None
 
     model = Sequential()
-    model.add(LSTM(features_lstm, return_sequences=True, input_shape=(x_train.shape[1], 1)))
-    model.add(LSTM(25, return_sequences=False))
+    model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], 1)))
     model.add(Dense(features_dense))
     model.add(Dense(1))
-    
 
-    # Compile the model
     model.compile(optimizer=optimizer, loss='mean_squared_error')
 
-    # Train the model
-    model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
+    early_stopper = EarlyStopping(monitor='loss', patience=5, verbose=1)
+
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, callbacks=[early_stopper])
 
     return model
 
@@ -86,7 +85,7 @@ def predict_single_delta(model, x_test, scaler):
 
     return predictions
 
-def analyze_single_delta(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', epochs=1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def analyze_single_delta(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     rmse = 0
     sz = len(predictions)
     for i in range(sz):
@@ -96,7 +95,7 @@ def analyze_single_delta(y_test, predictions, features_lstm = 128, features_dens
     print(f'Root Mean Square Error: {rmse}')
     #write rmse to file named results_single_delta_model.txt in results folder
     with open('results/results_single_delta_model.txt', 'a') as f:
-        f.write(f'rmse: {rmse} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, epochs: {epochs}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
+        f.write(f'rmse: {rmse} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
 
     plt.plot(y_test, label='Actual')
     plt.plot(predictions, label='Predicted')

@@ -71,10 +71,12 @@ def single_delta_model():
     x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.8, x_train_len=60) # training_dataset_percentage, x_train_len = 60
 
     model_params = {
-        'epochs': 1,
-        'batch_size': 1,
+        'features_lstm': 10,
+        'max_epochs': 40,
+        'batch_size': 5,
         'learning_rate': 0.001,
-        'clipvalue': 1.0
+        'clipvalue': 1.0,
+        'optimizer' : 'Adam'
     }
 
     model = single_delta_model_train(x_train, y_train, **model_params)
@@ -88,14 +90,20 @@ def single_delta_model():
     analyze_single_delta(y_test, predictions, **model_params)
 
 def multi_model():
-    stock_list = ['AAPL', 'MSFT', 'GOOG', 'AMZN']
-    stock_name = ['APPLE', 'MICROSOFT', 'GOOGLE', 'AMAZON']
+    stock_name = ['AAPL', 'MSFT', 'GOOG', '^IXIC']
     end = datetime(2023, 10, 30)
-    start = datetime(2022, 10, 30)
+    start = datetime(2012, 10, 30)
 
-    company_list = get_df(stock_list, stock_name, start, end)
+    stock_list = get_df(stock_name, start, end)
 
-    df = modify_df(company_list, 0.8)
+    delta_1_list = delta_df(stock_list, stock_name, 1)
+
+    combined_list = []
+    for stock, delta in zip(stock_list, delta_1_list):
+        combined_list.append(stock)
+        combined_list.append(delta)
+
+    x_train, y_train, x_test, y_test, scalar = modify_df(combined_list, training_dataset_percentage=0.8, x_train_len=60)
 
 def main():
     #data_analysis()
