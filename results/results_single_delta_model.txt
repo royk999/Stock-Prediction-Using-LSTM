@@ -13,3 +13,9 @@ rmse: [2.83190843] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batc
 rmse: [2.7921758] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
 rmse: [2.80239303] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
 rmse: [2.8039389] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 10, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.8039389] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.8039389] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.8039389], accuracy:0.49809160305343514 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.01805148], accuracy:0.4904580152671756 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001
+rmse: [0.01707694], accuracy:0.5095419847328244 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001
+rmse: [0.01703257], accuracy:0.4904580152671756 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001

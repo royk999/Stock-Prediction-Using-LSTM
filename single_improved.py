@@ -10,12 +10,11 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from keras.callbacks import EarlyStopping
 
-def multi_modify_df(stock_list, output_data, training_dataset_percentage, validation_dataset_percentage, x_train_len):   
-    len_data = len(stock_list[0])
+def single_improved_modify_df(df, training_dataset_percentage, validation_dataset_percentage, x_train_len):   
+    len_data = len(df)
 
-    data = pd.concat(stock_list, axis=1)
-    dataset = data.values
-    output_dataset = output_data.values
+    dataset = df.filter(['Close']).values
+    output_dataset = dataset
 
     training_data_len = int(np.ceil(len_data * training_dataset_percentage))
     validation_data_len = int(np.ceil(len_data * validation_dataset_percentage))
@@ -65,7 +64,7 @@ def multi_modify_df(stock_list, output_data, training_dataset_percentage, valida
     return x_train, y_train, x_val, y_val, x_test, y_test, scaler
 
 
-def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs=20, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs=20, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     if np.any(np.isnan(x_train)) or np.any(np.isnan(y_train)):
         print("NaN values found in training data. Please clean your data.")
         return None
@@ -85,7 +84,7 @@ def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, featu
 
     return model
 
-def predict_multi_model(model, x_test, y_test, scalar):
+def predict_single_improved_model(model, x_test, y_test, scalar):
     # Get the models predicted price values 
     predictions = model.predict(x_test) 
     print(f'predictions.shape = {predictions.shape}')
@@ -94,7 +93,7 @@ def predict_multi_model(model, x_test, y_test, scalar):
     y_test = scalar.inverse_transform(y_test) # Undo scaling
     return predictions, y_test
 
-def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def analyze_single_improved(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     rmse = 0
     MAPE = 0
 
@@ -104,16 +103,33 @@ def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25,
         MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
     
     rmse = np.sqrt(rmse / sz)
+    MAPE = MAPE * 100 / sz
 
     print(f'Root Mean Square Error: {rmse}')
     print(f'MAPE: {MAPE}')
-    with open('results/results_multi_model.txt', 'a') as f:
+    with open('results/results_single_improved_model.txt', 'a') as f:
         f.write(f'rmse: {rmse}, MAPE: {MAPE} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
 
     plt.plot(y_test, label='Actual')
     plt.plot(predictions, label='Predicted')
     plt.legend()
-    plt.title('Multi LSTM Model')
+    plt.title('Single_Improved Model')
     plt.xlabel('Date from 2020-10-30 (days)')
     plt.ylabel('Close Price ($)')    
-    plt.savefig('images/results_multi_model_original.png')
+    plt.savefig('images/results_single_improved_model.png')
+
+
+def return_metrics_single_improved(y_test, predictions):
+    RMSE = 0
+    MAPE = 0
+
+    sz = len(predictions)
+
+    for i in range(sz):
+        RMSE += (predictions[i] - y_test[i]) ** 2
+        MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
+    
+    RMSE = np.sqrt(RMSE / sz)
+    MAPE = MAPE / sz
+
+    return RMSE, MAPE

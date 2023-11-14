@@ -11,3 +11,47 @@ rmse: [0.31883518] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batc
 rmse: [0.32294532] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
 rmse: [0.33628454] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
 rmse: [0.34906562] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.32982036] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.23827329] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.14481878] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [0.12660516] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.8617684] - features_lstm: 10, feature_dense: 25, optimizer: Adagrad, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.89414303] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.89414303], accuracy: 0.45027124773960214 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.87322857], accuracy: 0.4972875226039783 - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.87204992], accuracy: 0.4629294755877034, MAPE: [inf],  - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.88794436], accuracy: 0.4701627486437613, MSE: [8.3402226] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [10.30889435], accuracy: 0.484629294755877, MSE: [106.27330269] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.88596922], accuracy: 0.4430379746835443, MSE: [8.32881834] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [97.68457176], accuracy: 1.0, MSE: [9542.27556015] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [97.68457176], accuracy: 1.0, MSE: [9542.27556015] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [21.92516648], accuracy: 1.0, MSE: [480.71292523] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [3.446705], accuracy: 1.0, MSE: [11.87977534] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [18.80390659], accuracy: 1.0, MSE: [353.58690317] - features_lstm: 10, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [22.424597], accuracy: 1.0, MSE: [502.8625505] - features_lstm: 40, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [41.52958387], accuracy: 1.0, MSE: [1724.70633603] - features_lstm: 40, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [36.33591744], accuracy: 1.0, MSE: [1320.2988965] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [6.50848858], accuracy: 1.0, MSE: [42.36042357] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [10.11686141], accuracy: 1.0, MSE: [102.35088487] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [12.03578696], accuracy: 1.0, MSE: [144.86016766] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [5.90598861], accuracy: 1.0, MSE: [34.88070144] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 2, learning_rate: 0.001, clipvalue: 1.0
+rmse: [5.12166246], accuracy: 1.0, MSE: [26.2314264] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [3.24684337], accuracy: 1.0, MSE: [10.54199185] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.66721119], accuracy: 0.4601449275362319, MSE: [7.11401555] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.66721119], accuracy: 0.4601449275362319, profit: [-1.38994598] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.66721119], accuracy: 0.4601449275362319, profit: [16.86994171] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.66721119], accuracy: 0.4601449275362319, profit: [15.47999573] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.66121379], accuracy: 0.4746376811594203, profit: [-1.04991913] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.97736673], accuracy: 1.0, profit: [44893.43000031] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.97736673], accuracy: 1.0, MAPE: [4.0192679] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.97736673], accuracy: 1.0, MAPE: [4.0192679] - features_lstm: 150, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [2.79529084], accuracy: 1.0, MAPE: [3.7245473] - features_lstm: 150, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [4.62969161], accuracy: 1.0, MAPE: [6.88908402] - features_lstm: 150, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [5.68474968], MAPE: [8.83284951] - features_lstm: 150, feature_dense: 25, optimizer: Adam, batch_size: 5, learning_rate: 0.001, clipvalue: 1.0
+rmse: [3.64772754], MAPE: [5.07381054] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.85331511], MAPE: [45.606435] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [3.32534153], MAPE: [4.59229195] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [19.75229794], MAPE: [32.89029498] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [4.42940943], MAPE: [6.31365608] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.59634993], MAPE: [40.01379821] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [4.42940943], MAPE: [6.31365608] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0

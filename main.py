@@ -1,6 +1,5 @@
 from data_processing import get_df
 from data_processing import create_graph_close
-from data_processing import modify_df
 from data_processing import create_graph_delta
 from data_processing import create_graph_correlation
 from data_processing import delta_df
@@ -16,9 +15,15 @@ from single_delta_lstm import single_delta_model_train
 from single_delta_lstm import predict_single_delta
 from single_delta_lstm import analyze_single_delta
 
+from multi_lstm import multi_modify_df
 from multi_lstm import multi_model_train
 from multi_lstm import predict_multi_model
 from multi_lstm import analyze_multi
+
+from single_improved import single_improved_modify_df
+from single_improved import single_improved_model_train
+from single_improved import predict_single_improved_model
+from single_improved import analyze_single_improved
 
 from datetime import datetime
 from tensorflow.keras.models import load_model
@@ -73,6 +78,10 @@ def single_delta_model():
     stock_name = "AAPL"
     df = get_df_singular(stock_name, start, end)
     x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.8, x_train_len=60) # training_dataset_percentage, x_train_len = 60
+    print(f'min x_train val: {x_train.min()}')
+    print(f'min y_train val: {y_train.min()}')
+    print(f'min x_test val: {x_test.min()}')
+    print(f'min y_test val: {y_test.min()}')
 
     model_params = {
         'features_lstm': 10,
@@ -83,18 +92,15 @@ def single_delta_model():
         'optimizer' : 'Adam'
     }
 
-    model = single_delta_model_train(x_train, y_train, **model_params)
-    model.save('model_trained/single_delta_model.keras') # save the model to a file
-
-    #model_path = 'model_trained/single_delta_model.keras'
-    #model = load_model(model_path)
-
+    model_path = 'model_trained/single_delta_model.keras'
+    model = load_model(model_path)
+    #model = single_delta_model_train(x_train, y_train, **model_params)
+    #model.save(model_path) # save the model to a file
     predictions = predict_single_delta(model, x_test, scalar)
-    
-    analyze_single_delta(y_test, predictions, **model_params)
+    analyze_single_delta(y_test, predictions, scalar, **model_params)
 
 def multi_model():
-    stock_name = ['AAPL', 'MSFT', 'GOOG', '^IXIC']
+    stock_name = ['AAPL']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
 
@@ -105,42 +111,72 @@ def multi_model():
     combined_list = []
     for stock, delta in zip(stock_list, delta_1_list):
         combined_list.append(stock.filter(['Close']))
-        combined_list.append(delta.filter(['Close']))
 
+    apple_close = stock_list[0].filter(['Close'])
     apple_delta = delta_1_list[0].filter(['Close'])
 
-    x_train, y_train, x_test, y_test, scalar = modify_df(combined_list, apple_delta, training_dataset_percentage=0.8, x_train_len=60)
-    print(f'y_train: {y_train}')
-    print(f'y_test: {y_test}')
-
+    x_train, y_train, x_val, y_val, x_test, y_test, scalar = multi_modify_df(combined_list, apple_close, training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
 
     model_params = {
-        'features_lstm': 10,
-        'max_epochs': 20,
-        'batch_size': 5,
-        'learning_rate': 0.001,
+        'features_lstm': 128,
+        'features_dense': 25,
+        'max_epochs': 1,
+        'batch_size': 1,
+        'learning_rate': 0.001, 
         'clipvalue': 1.0,
-        'optimizer' : 'Adagrad'
+        'optimizer' : 'Adam'
     }
 
-    model = multi_model_train(x_train, y_train, **model_params)
+    model_path = 'model_trained/multi_model.keras'
 
-    #save the model in results
-    model.save('model_trained/multi_model.keras')
+    model = load_model(model_path)
+    #model = multi_model_train(x_train, y_train, x_val, y_val, **model_params)
 
-    #model_path = 'model_trained/multi_model.keras'
-    #model = load_model(model_path)
+    model.save(model_path)
 
-    predictions = predict_multi_model(model, x_test, scalar)
-
+    predictions, y_test = predict_multi_model(model, x_test, y_test, scalar)
+    
     analyze_multi(y_test, predictions, **model_params)
+
+
+def single_improved_model():
+    stock_name = ['AAPL']
+    end = datetime(2023, 10, 30)
+    start = datetime(2012, 10, 30)
+
+    df = get_df(stock_name, start, end)
+
+    x_train, y_train, x_val, y_val, x_test, y_test, scalar = single_improved_modify_df(df[0], training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
+
+    model_params = {
+        'features_lstm': 128,
+        'features_dense': 25,
+        'max_epochs': 1,
+        'batch_size': 1,
+        'learning_rate': 0.001, 
+        'clipvalue': 1.0,
+        'optimizer' : 'Adam'
+    }
+
+    model_path = 'model_trained/single_improved_model.keras'
+
+    for i in range(1):
+        #model = load_model(model_path)
+        model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
+
+        model.save(model_path)
+
+        predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
+
+        analyze_single_improved(y_test_scaled, predictions, **model_params)
 
 
 def main():
     #data_analysis()
     #single_model()
     #single_delta_model()
-    multi_model()
+    #multi_model()
+    single_improved_model()
 
 if __name__ == '__main__':
     main()
