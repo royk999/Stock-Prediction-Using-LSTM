@@ -3,7 +3,7 @@
 This project aims to improve the LSTM model which predicts Apple's Closing Price and ultimately creating a model which can decide how to invest on stocks. 
 
 # Modeling Approach
-This project is based on the kaggle's "stock market analysis & prediction using LSTM" project. From this Kaggle's model, this project ultimately aims to create a model with multiple-features inputs which predicts the stock value difference. 
+This project ultimately aims to improve the model with multiple-features inputs which predicts the stock value. The basic model is the Kaggle model which used single feature to predict the stock value. 
 
 # Data Collection
 Apple Closing Price, delta(1,2,3)

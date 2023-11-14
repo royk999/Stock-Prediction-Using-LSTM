@@ -55,3 +55,4 @@ rmse: [19.75229794], MAPE: [32.89029498] - features_lstm: 128, feature_dense: 25
 rmse: [4.42940943], MAPE: [6.31365608] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
 rmse: [1.59634993], MAPE: [40.01379821] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
 rmse: [4.42940943], MAPE: [6.31365608] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [4.42940943], MAPE: [6.31365608] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0

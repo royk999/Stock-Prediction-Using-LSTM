@@ -87,7 +87,6 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
 def predict_single_improved_model(model, x_test, y_test, scalar):
     # Get the models predicted price values 
     predictions = model.predict(x_test) 
-    print(f'predictions.shape = {predictions.shape}')
 
     predictions = scalar.inverse_transform(predictions) # Undo scaling
     y_test = scalar.inverse_transform(y_test) # Undo scaling
@@ -118,6 +117,10 @@ def analyze_single_improved(y_test, predictions, features_lstm = 128, features_d
     plt.ylabel('Close Price ($)')    
     plt.savefig('images/results_single_improved_model.png')
 
+def evaluate_single_improved(rmse, mape, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+    print(f'rmse: {rmse}, MAPE: {mape}')
+    with open('results/results_single_improved_model.txt', 'a') as f:
+        f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
 
 def return_metrics_single_improved(y_test, predictions):
     RMSE = 0
@@ -130,6 +133,6 @@ def return_metrics_single_improved(y_test, predictions):
         MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
     
     RMSE = np.sqrt(RMSE / sz)
-    MAPE = MAPE / sz
+    MAPE = MAPE * 100 / sz
 
     return RMSE, MAPE

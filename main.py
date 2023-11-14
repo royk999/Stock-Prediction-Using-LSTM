@@ -24,6 +24,8 @@ from single_improved import single_improved_modify_df
 from single_improved import single_improved_model_train
 from single_improved import predict_single_improved_model
 from single_improved import analyze_single_improved
+from single_improved import return_metrics_single_improved
+from single_improved import evaluate_single_improved
 
 from datetime import datetime
 from tensorflow.keras.models import load_model
@@ -138,7 +140,6 @@ def multi_model():
     
     analyze_multi(y_test, predictions, **model_params)
 
-
 def single_improved_model():
     stock_name = ['AAPL']
     end = datetime(2023, 10, 30)
@@ -160,7 +161,12 @@ def single_improved_model():
 
     model_path = 'model_trained/single_improved_model.keras'
 
-    for i in range(1):
+    RMSE = 0
+    MAPE = 0
+
+    for i in range(10):
+        print(f'iteration {i}')
+
         #model = load_model(model_path)
         model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
 
@@ -168,7 +174,15 @@ def single_improved_model():
 
         predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
 
-        analyze_single_improved(y_test_scaled, predictions, **model_params)
+        rmse, mape = return_metrics_single_improved(y_test_scaled, predictions)
+
+        RMSE += rmse
+        MAPE += mape
+    
+    RMSE /= 10
+    MAPE /= 10
+
+    evaluate_single_improved(RMSE, MAPE)
 
 
 def main():
