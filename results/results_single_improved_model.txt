@@ -1,1 +1,7 @@
 rmse: [4.28229154], MAPE: [2.159642] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [3.1130299], MAPE: [1.54867077] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.61251056], MAPE: [3.2968622] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.61251056], MAPE: [3.2968622] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.61251056], MAPE: [3.2968622] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.61251056], MAPE: [3.2968622] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0
+rmse: [1.65554145], MAPE: [2.56411889] - features_lstm: 128, feature_dense: 25, optimizer: Adam, batch_size: 1, learning_rate: 0.001, clipvalue: 1.0

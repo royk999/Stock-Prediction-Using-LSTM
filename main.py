@@ -30,6 +30,11 @@ from single_improved import evaluate_single_improved
 from datetime import datetime
 from tensorflow.keras.models import load_model
 import pandas as pd
+import os
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+
+
 
 def data_analysis(): 
     stock_name = ['AAPL', 'MSFT', 'GOOG', '^IXIC']
@@ -122,7 +127,7 @@ def multi_model():
     model_params = {
         'features_lstm': 128,
         'features_dense': 25,
-        'max_epochs': 1,
+        'max_epochs': 100,
         'batch_size': 1,
         'learning_rate': 0.001, 
         'clipvalue': 1.0,
@@ -140,7 +145,7 @@ def multi_model():
     
     analyze_multi(y_test, predictions, **model_params)
 
-def single_improved_model():
+def single_improved_model(model_params):
     stock_name = ['AAPL']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
@@ -149,22 +154,13 @@ def single_improved_model():
 
     x_train, y_train, x_val, y_val, x_test, y_test, scalar = single_improved_modify_df(df[0], training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
 
-    model_params = {
-        'features_lstm': 128,
-        'features_dense': 25,
-        'max_epochs': 1,
-        'batch_size': 1,
-        'learning_rate': 0.001, 
-        'clipvalue': 1.0,
-        'optimizer' : 'Adam'
-    }
-
     model_path = 'model_trained/single_improved_model.keras'
 
     RMSE = 0
     MAPE = 0
-
-    for i in range(10):
+    iterations = 1
+    
+    for i in range(iterations):
         print(f'iteration {i}')
 
         #model = load_model(model_path)
@@ -172,25 +168,41 @@ def single_improved_model():
 
         model.save(model_path)
 
-        predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
+        predictions, y_test_scaled = predict_single_improved_model(model, x_train, y_train, scalar)
 
         rmse, mape = return_metrics_single_improved(y_test_scaled, predictions)
 
         RMSE += rmse
         MAPE += mape
     
-    RMSE /= 10
-    MAPE /= 10
+    RMSE /= iterations
+    MAPE /= iterations
 
-    evaluate_single_improved(RMSE, MAPE)
+    evaluate_single_improved(RMSE, MAPE, **model_params)
 
 
 def main():
+    model_params = {
+        'features_lstm': 128,
+        'features_dense': 25,
+        'max_epochs': 100,
+        'batch_size': 1,
+        'learning_rate': 0.001, 
+        'clipvalue': 1.0,
+        'optimizer' : 'Adam'
+    }
     #data_analysis()
     #single_model()
     #single_delta_model()
     #multi_model()
-    single_improved_model()
+    #single_improved_model(model_params)
+
+    
+    for batch_size in (1, 4, 8, 16): 
+        model_params['batch_size'] = batch_size
+        for learning_rate in (0.1, 0.01, 0.001):
+            model_params['learning_rate'] = learning_rate
+            single_improved_model(model_params)
 
 if __name__ == '__main__':
     main()

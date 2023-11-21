@@ -78,7 +78,7 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
-    early_stopper = EarlyStopping(monitor='loss', patience=10, verbose=1)
+    early_stopper = EarlyStopping(monitor='loss', patience=5, verbose=1)
 
     model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, callbacks=[early_stopper], validation_data=(x_val, y_val), shuffle=True)
 
@@ -128,10 +128,15 @@ def return_metrics_single_improved(y_test, predictions):
 
     sz = len(predictions)
 
+    
     for i in range(sz):
         RMSE += (predictions[i] - y_test[i]) ** 2
         MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
-    
+    '''
+        if(abs((predictions[i] - y_test[i]) / y_test[i]) > 0.1):
+            print(f'index: {i}, prediction: {predictions[i]}, actual: {y_test[i]}')
+    '''
+
     RMSE = np.sqrt(RMSE / sz)
     MAPE = MAPE * 100 / sz
 
