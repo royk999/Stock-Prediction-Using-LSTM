@@ -10,6 +10,8 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from keras.callbacks import EarlyStopping
 
+np.random.seed()
+
 def multi_modify_df(stock_list, output_data, training_dataset_percentage, validation_dataset_percentage, x_train_len):   
     len_data = len(stock_list[0])
 

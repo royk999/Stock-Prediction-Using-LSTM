@@ -9,6 +9,8 @@ from sklearn.preprocessing import MinMaxScaler # for data scaling
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 
+np.random.seed(42)
+
 def get_df_singular(stock_name, start, end):
     # Get data from Yahoo Finance
     yf.pdr_override()

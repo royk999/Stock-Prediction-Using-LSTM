@@ -145,7 +145,7 @@ def multi_model():
     
     analyze_multi(y_test, predictions, **model_params)
 
-def single_improved_model(model_params):
+def single_improved_model(model_params, iterations=1):
     stock_name = ['AAPL']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
@@ -158,7 +158,6 @@ def single_improved_model(model_params):
 
     RMSE = 0
     MAPE = 0
-    iterations = 1
     
     for i in range(iterations):
         print(f'iteration {i}')
@@ -168,7 +167,7 @@ def single_improved_model(model_params):
 
         model.save(model_path)
 
-        predictions, y_test_scaled = predict_single_improved_model(model, x_train, y_train, scalar)
+        predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
 
         rmse, mape = return_metrics_single_improved(y_test_scaled, predictions)
 
@@ -196,13 +195,15 @@ def main():
     #single_delta_model()
     #multi_model()
     #single_improved_model(model_params)
-
     
     for batch_size in (1, 4, 8, 16): 
         model_params['batch_size'] = batch_size
         for learning_rate in (0.1, 0.01, 0.001):
             model_params['learning_rate'] = learning_rate
-            single_improved_model(model_params)
+            for optimizer in ('Adam', 'Adagrad', 'RMSprop', 'SGD'):
+                model_params['optimizer'] = optimizer
+                single_improved_model(model_params, 10)
+                
 
 if __name__ == '__main__':
     main()

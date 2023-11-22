@@ -10,43 +10,41 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from keras.callbacks import EarlyStopping
 
+np.random.seed(42)
+
 def single_improved_modify_df(df, training_dataset_percentage, validation_dataset_percentage, x_train_len):   
-    len_data = len(df)
+    len_data = len(df) - x_train_len + 1
 
     dataset = df.filter(['Close']).values
     output_dataset = dataset
 
-    training_data_len = int(np.ceil(len_data * training_dataset_percentage))
-    validation_data_len = int(np.ceil(len_data * validation_dataset_percentage))
-
-    # Scale the data using MinMaxScaler
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaled_dataset = scaler.fit_transform(dataset)
     scaled_output_dataset = scaler.fit_transform(output_dataset.reshape(-1, 1)) # reshape(-1, 1) to convert 1D array to 2D array
-    training_x_data = scaled_dataset[0:training_data_len, :]
-    training_y_data = scaled_output_dataset[0:training_data_len, :]
 
-    x_train = []
-    y_train = []
+    training_data_len = int(np.ceil((training_dataset_percentage) * len_data))
+    validation_data_len = int(np.ceil((validation_dataset_percentage) * len_data))
+    training_indexes = np.random.choice(training_data_len + validation_data_len, training_data_len, replace=False)
 
-    for i in range(x_train_len, training_data_len):
-        x_train.append(training_x_data[i - x_train_len:i, :])
-        y_train.append(training_y_data[i, :])
-        
+    train_val_x_raw_data = scaled_dataset[:training_data_len+validation_data_len+x_train_len-1, :]  
+    train_val_y_raw_data = scaled_output_dataset[:training_data_len + validation_data_len, :]
+
+    train_val_x_data = []
+    train_val_y_data = []
+
+    for i in range(training_data_len+validation_data_len):
+        train_val_x_data.append(train_val_x_raw_data[i:i+x_train_len, :])
+        train_val_y_data.append(train_val_y_raw_data[i, :])
+
+    train_val_x_data, train_val_y_data = np.array(train_val_x_data), np.array(train_val_y_data)
+
+    x_train = train_val_x_data[training_indexes, :, :]
+    y_train = train_val_y_data[training_indexes, :]
+    x_val = np.delete(train_val_x_data, training_indexes, axis=0)
+    y_val = np.delete(train_val_y_data, training_indexes, axis=0)
+
     x_train, y_train = np.array(x_train), np.array(y_train)
-
-    # Create the validation data set
-    validation_x_data = scaled_dataset[training_data_len - x_train_len:training_data_len + validation_data_len, :]
-    validation_y_data = scaled_output_dataset[training_data_len:training_data_len + validation_data_len, :]
-    x_val = []
-    y_val = []
-
-    for i in range(len(validation_y_data)):
-        x_val.append(validation_x_data[i:i+x_train_len, :])
-        y_val.append(validation_y_data[i, :])
-
-    # Convert the data to a numpy array
-    x_val, y_val = np.array(x_val), np.array(y_val)
+    x_val, y_val = np.array(x_val), np.array(y_val)             
 
     # Create the testing data set
     test_x_data = scaled_dataset[training_data_len+validation_data_len - x_train_len: , :]
@@ -74,7 +72,7 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
 
     model = Sequential()
     model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
-    model.add(Dense(features_dense, activation='linear'))
+    #model.add(Dense(features_dense, activation='linear'))
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
