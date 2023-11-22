@@ -12,7 +12,6 @@ from keras.callbacks import EarlyStopping
 
 np.random.seed(42)
 
-
 def modify_df_single_delta(df, training_dataset_percentage, x_train_len):
     close_values = df.filter(['Close']).values
 

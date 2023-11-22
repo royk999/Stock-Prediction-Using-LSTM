@@ -177,7 +177,7 @@ def single_improved_model(model_params, iterations=1):
     RMSE /= iterations
     MAPE /= iterations
 
-    evaluate_single_improved(RMSE, MAPE, **model_params)
+    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_improved_model', **model_params)
 
 
 def main():

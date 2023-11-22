@@ -76,7 +76,7 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
-    early_stopper = EarlyStopping(monitor='loss', patience=5, verbose=1)
+    early_stopper = EarlyStopping(monitor='loss', patience=5, verbose=0)
 
     model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, callbacks=[early_stopper], validation_data=(x_val, y_val), shuffle=True)
 
@@ -115,9 +115,9 @@ def analyze_single_improved(y_test, predictions, features_lstm = 128, features_d
     plt.ylabel('Close Price ($)')    
     plt.savefig('images/results_single_improved_model.png')
 
-def evaluate_single_improved(rmse, mape, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def evaluate_single_improved(rmse, mape, path = 'results/results_single_improved_model.txt', features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     print(f'rmse: {rmse}, MAPE: {mape}')
-    with open('results/results_single_improved_model.txt', 'a') as f:
+    with open(path, 'a') as f:
         f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
 
 def return_metrics_single_improved(y_test, predictions):
