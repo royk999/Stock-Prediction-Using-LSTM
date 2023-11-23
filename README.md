@@ -48,8 +48,13 @@ delta 값만을 가지고 학습한 결과 의미있는 예측을 하지 못했�
 각 모델 구조(논문을 참고)를 기반으로 optimizer, learning_rate, batch_size를 정함
 이를 정하기 위해서 각 hyperparameter에 대해서 10번 시행하고 평균 평가함수 값을 비교함 (RMSE, MAPE)
 이때 max_epochs는 100으로, cutoff는 5로 설정
+-> 그런데 batch_size가 1인 모델은 학습시키는 데 batch_size가 4,8,16인 모델에 비해서 너무 오랜 시간이 걸린다는 사실을 알아냄. 따라서 batch_size가 1인 모델이 Loss값이 최적이기는 했지만, 이에 거의 근접한 Loss값을 가진 batch_size 4인 모델 역시 최적으로 간주함. 
 
-이후 학습한 optimizer, learning_rate, batch_size를 기반으로 neuron의 수를 조정함. 
+set 1: optimizer: SGD, batch_size: 1, learning_rate: 0.1
+set 2: optimizer: SGD, batch_size: 4, learning_rate: 0.001
+set 3: optimizer: SGD, batch_size: 8, learning_rate: 0.1
+
+이후 학습한 optimizer, learning_rate, batch_size를 기본 값으로 설정하고 neuron의 수를 조정함. 
 
 ## 다변수 LSTM 모델 최적화하기
 
