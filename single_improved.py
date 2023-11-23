@@ -72,7 +72,7 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
 
     model = Sequential()
     model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
-    #model.add(Dense(features_dense, activation='linear'))
+    model.add(Dense(features_dense, activation='linear'))
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
@@ -118,7 +118,8 @@ def analyze_single_improved(y_test, predictions, features_lstm = 128, features_d
 def evaluate_single_improved(rmse, mape, path = 'results/results_single_improved_model.txt', features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     print(f'rmse: {rmse}, MAPE: {mape}')
     with open(path, 'a') as f:
-        f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
+        #f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
+        f.write(f'rmse: {rmse}, MAPE: {mape} - optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}\n')
 
 def return_metrics_single_improved(y_test, predictions):
     RMSE = 0

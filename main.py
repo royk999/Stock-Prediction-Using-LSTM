@@ -37,7 +37,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 def data_analysis(): 
-    stock_name = ['AAPL', 'MSFT', 'GOOG', '^IXIC']
+    stock_name = ['AAPL', 'BTC-USD', 'DX-Y.NYB', '^IXIC']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
 
@@ -53,7 +53,7 @@ def data_analysis():
     #create_graph_delta(stock_name, stock_list)
 
     combined_list = []
-    combined_name = ['AAPL', 'AAPL_D', 'MSFT', 'MSFT_D', 'GOOG', 'GOOG_D', 'NASDAQ', 'NASDAQ_D']
+    combined_name = ['AAPL', 'AAPL_D', 'bitcoin', 'bitcoin_D', 'USDX', 'USDX_D', 'NASDAQ', 'NASDAQ_D']
     for stock, delta in zip(stock_list, delta_1_list):
         combined_list.append(stock)
         combined_list.append(delta)
@@ -179,7 +179,6 @@ def single_improved_model(model_params, iterations=1):
 
     evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_improved_model', **model_params)
 
-
 def main():
     model_params = {
         'features_lstm': 128,
@@ -190,20 +189,23 @@ def main():
         'clipvalue': 1.0,
         'optimizer' : 'Adam'
     }
-    #data_analysis()
+    
+    '''
+    for optimizer in ('Adam', 'Adagrad', 'RMSprop', 'SGD'):
+        model_params['optimizer'] = optimizer
+        for learning_rate in (0.1, 0.01, 0.001):
+            model_params['learning_rate'] = learning_rate
+            for batch_size in (1, 4, 8, 16): 
+                model_params['batch_size'] = batch_size
+                single_improved_model(model_params, 10)
+    '''
+
+    data_analysis()
     #single_model()
     #single_delta_model()
     #multi_model()
     #single_improved_model(model_params)
     
-    for batch_size in (1, 4, 8, 16): 
-        model_params['batch_size'] = batch_size
-        for learning_rate in (0.1, 0.01, 0.001):
-            model_params['learning_rate'] = learning_rate
-            for optimizer in ('Adam', 'Adagrad', 'RMSprop', 'SGD'):
-                model_params['optimizer'] = optimizer
-                single_improved_model(model_params, 10)
-                
 
 if __name__ == '__main__':
     main()
