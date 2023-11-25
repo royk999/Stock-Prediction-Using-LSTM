@@ -19,6 +19,7 @@ from multi_lstm import multi_modify_df
 from multi_lstm import multi_model_train
 from multi_lstm import predict_multi_model
 from multi_lstm import analyze_multi
+from multi_lstm import evaluate_multi_model
 
 from single_improved import single_improved_modify_df
 from single_improved import single_improved_model_train
@@ -60,7 +61,8 @@ def data_analysis():
     
     create_graph_correlation(stock_name, stock_list, "Closing Price Correlation")
     create_graph_correlation(stock_name, delta_1_list, "Delta 1 Correlation")
-    create_graph_correlation(combined_name, combined_list, 'Combined Correlation')
+   
+    #create_graph_correlation(combined_name, combined_list, 'Combined Correlation')
 
 def single_model():
     end = datetime(2022, 10, 30)
@@ -106,44 +108,34 @@ def single_delta_model():
     predictions = predict_single_delta(model, x_test, scalar)
     analyze_single_delta(y_test, predictions, scalar, **model_params)
 
-def multi_model():
+def multi_model(model_params, iterations=1):
     stock_name = ['AAPL']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
 
     stock_list = get_df(stock_name, start, end)
 
-    delta_1_list = delta_df(stock_list, stock_name, 1)
-
     combined_list = []
-    for stock, delta in zip(stock_list, delta_1_list):
-        combined_list.append(stock.filter(['Close']))
-
+    
+    for stock in stock_list:
+        combined_list.append(stock.filter(['Close']).fillna(0))
+        
     apple_close = stock_list[0].filter(['Close'])
-    apple_delta = delta_1_list[0].filter(['Close'])
 
     x_train, y_train, x_val, y_val, x_test, y_test, scalar = multi_modify_df(combined_list, apple_close, training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
 
-    model_params = {
-        'features_lstm': 128,
-        'features_dense': 25,
-        'max_epochs': 100,
-        'batch_size': 1,
-        'learning_rate': 0.001, 
-        'clipvalue': 1.0,
-        'optimizer' : 'Adam'
-    }
-
     model_path = 'model_trained/multi_model.keras'
 
-    model = load_model(model_path)
-    #model = multi_model_train(x_train, y_train, x_val, y_val, **model_params)
+    #model = load_model(model_path)
+    model = multi_model_train(x_train, y_train, x_val, y_val, **model_params)
 
     model.save(model_path)
 
     predictions, y_test = predict_multi_model(model, x_test, y_test, scalar)
     
-    analyze_multi(y_test, predictions, **model_params)
+    RMSE, MAPE = analyze_multi(y_test, predictions, **model_params)
+
+    evaluate_multi_model(RMSE, MAPE, path = 'results/results_multi_model', **model_params)
 
 def single_improved_model(model_params, iterations=1):
     stock_name = ['AAPL']
@@ -160,7 +152,7 @@ def single_improved_model(model_params, iterations=1):
     MAPE = 0
     
     for i in range(iterations):
-        print(f'iteration {i}')
+        print(f'Iteration {i+1} of {iterations}')
 
         #model = load_model(model_path)
         model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
@@ -177,17 +169,17 @@ def single_improved_model(model_params, iterations=1):
     RMSE /= iterations
     MAPE /= iterations
 
-    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_improved_model', **model_params)
+    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_features.txt', **model_params)
 
 def main():
     model_params = {
         'features_lstm': 128,
         'features_dense': 25,
         'max_epochs': 100,
-        'batch_size': 1,
+        'batch_size': 4,
         'learning_rate': 0.001, 
         'clipvalue': 1.0,
-        'optimizer' : 'Adam'
+        'optimizer' : 'SGD'
     }
     
     '''
@@ -200,12 +192,19 @@ def main():
                 single_improved_model(model_params, 10)
     '''
 
-    data_analysis()
+    for features_lstm in (10, 25, 50, 100, 150, 200):
+        model_params['features_lstm'] = features_lstm
+        for batch_size, learning_rate, optimizer in ((1, 0.1, 'SGD'), (4, 0.001, 'Adam'), (8, 0.1, 'SGD')):
+            model_params['batch_size'] = batch_size
+            model_params['learning_rate'] = learning_rate
+            model_params['optimizer'] = optimizer
+            single_improved_model(model_params, 10)
+
+    #data_analysis()
     #single_model()
     #single_delta_model()
-    #multi_model()
+    #multi_model(model_params, 1)
     #single_improved_model(model_params)
     
-
 if __name__ == '__main__':
     main()

@@ -70,6 +70,8 @@ def multi_modify_df(stock_list, output_data, training_dataset_percentage, valida
 def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs=20, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     if np.any(np.isnan(x_train)) or np.any(np.isnan(y_train)):
         print("NaN values found in training data. Please clean your data.")
+        nan_indices = np.where(np.isnan(x_train))
+        print(nan_indices)
         return None
     if np.any(np.isinf(x_train)) or np.any(np.isinf(y_train)):
         print("Inf values found in training data. Please clean your data.")
@@ -77,13 +79,14 @@ def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, featu
 
     model = Sequential()
     model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
-    model.add(Dense(features_dense, activation='linear'))
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
     early_stopper = EarlyStopping(monitor='loss', patience=10, verbose=1)
 
     model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, callbacks=[early_stopper], validation_data=(x_val, y_val), shuffle=True)
+
+    print(f'debug1')
 
     return model
 
@@ -107,11 +110,6 @@ def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25,
     
     rmse = np.sqrt(rmse / sz)
 
-    print(f'Root Mean Square Error: {rmse}')
-    print(f'MAPE: {MAPE}')
-    with open('results/results_multi_model.txt', 'a') as f:
-        f.write(f'rmse: {rmse}, MAPE: {MAPE} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
-
     plt.plot(y_test, label='Actual')
     plt.plot(predictions, label='Predicted')
     plt.legend()
@@ -119,3 +117,11 @@ def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25,
     plt.xlabel('Date from 2020-10-30 (days)')
     plt.ylabel('Close Price ($)')    
     plt.savefig('images/results_multi_model_original.png')
+
+    return rmse, MAPE
+
+def evaluate_multi_model(rmse, mape, path = 'results/results_multi_model.txt', features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+    print(f'rmse: {rmse}, MAPE: {mape}')
+    with open(path, 'a') as f:
+        #f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
+        f.write(f'rmse: {rmse}, MAPE: {mape} - optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}\n')
