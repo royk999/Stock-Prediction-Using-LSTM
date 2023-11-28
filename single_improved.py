@@ -119,7 +119,7 @@ def evaluate_single_improved(rmse, mape, path = 'results/results_single_improved
     print(f'rmse: {rmse}, MAPE: {mape}')
     with open(path, 'a') as f:
         #f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
-        f.write(f'rmse: {rmse}, MAPE: {mape} - optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}\n')
+        f.write(f'rmse: {rmse}, MAPE: {mape} - features_lstm: {features_lstm}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}\n')
 
 def return_metrics_single_improved(y_test, predictions):
     RMSE = 0

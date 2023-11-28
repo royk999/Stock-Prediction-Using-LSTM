@@ -86,8 +86,6 @@ def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, featu
 
     model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, callbacks=[early_stopper], validation_data=(x_val, y_val), shuffle=True)
 
-    print(f'debug1')
-
     return model
 
 def predict_multi_model(model, x_test, y_test, scalar):
@@ -99,7 +97,7 @@ def predict_multi_model(model, x_test, y_test, scalar):
     y_test = scalar.inverse_transform(y_test) # Undo scaling
     return predictions, y_test
 
-def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+def return_metrics_multi(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     rmse = 0
     MAPE = 0
 
@@ -109,14 +107,6 @@ def analyze_multi(y_test, predictions, features_lstm = 128, features_dense = 25,
         MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
     
     rmse = np.sqrt(rmse / sz)
-
-    plt.plot(y_test, label='Actual')
-    plt.plot(predictions, label='Predicted')
-    plt.legend()
-    plt.title('Multi LSTM Model')
-    plt.xlabel('Date from 2020-10-30 (days)')
-    plt.ylabel('Close Price ($)')    
-    plt.savefig('images/results_multi_model_original.png')
 
     return rmse, MAPE
 

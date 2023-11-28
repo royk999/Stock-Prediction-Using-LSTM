@@ -18,7 +18,7 @@ from single_delta_lstm import analyze_single_delta
 from multi_lstm import multi_modify_df
 from multi_lstm import multi_model_train
 from multi_lstm import predict_multi_model
-from multi_lstm import analyze_multi
+from multi_lstm import return_metrics_multi
 from multi_lstm import evaluate_multi_model
 
 from single_improved import single_improved_modify_df
@@ -31,6 +31,7 @@ from single_improved import evaluate_single_improved
 from datetime import datetime
 from tensorflow.keras.models import load_model
 import pandas as pd
+import numpy as np
 import os
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
@@ -109,7 +110,7 @@ def single_delta_model():
     analyze_single_delta(y_test, predictions, scalar, **model_params)
 
 def multi_model(model_params, iterations=1):
-    stock_name = ['AAPL']
+    stock_name = ['AAPL', 'DX-Y.NYB']
     end = datetime(2023, 10, 30)
     start = datetime(2012, 10, 30)
 
@@ -119,21 +120,36 @@ def multi_model(model_params, iterations=1):
     
     for stock in stock_list:
         combined_list.append(stock.filter(['Close']).fillna(0))
-        
+    
+    if np.any(np.isnan(combined_list[1])) or np.any(np.isnan(combined_list[1])):
+        print("NaN values found in combined list. Please clean your data.")
+        nan_indices = np.where(np.isnan(combined_list[1]))
+        print(nan_indices)
+        return None
+    
     apple_close = stock_list[0].filter(['Close'])
 
     x_train, y_train, x_val, y_val, x_test, y_test, scalar = multi_modify_df(combined_list, apple_close, training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
 
     model_path = 'model_trained/multi_model.keras'
 
-    #model = load_model(model_path)
-    model = multi_model_train(x_train, y_train, x_val, y_val, **model_params)
-
-    model.save(model_path)
-
-    predictions, y_test = predict_multi_model(model, x_test, y_test, scalar)
+    RMSE = 0
+    MAPE = 0
     
-    RMSE, MAPE = analyze_multi(y_test, predictions, **model_params)
+    for i in range(iterations):
+        print(f'Iteration {i+1} of {iterations}')
+
+        #model = load_model(model_path)
+        model = multi_model_train(x_train, y_train, x_val, y_val, **model_params)
+
+        model.save(model_path)
+
+        predictions, y_test_scaled = predict_multi_model(model, x_test, y_test, scalar)
+
+        rmse, mape = return_metrics_multi(y_test_scaled, predictions)
+
+        RMSE += rmse
+        MAPE += mape
 
     evaluate_multi_model(RMSE, MAPE, path = 'results/results_multi_model', **model_params)
 
@@ -169,15 +185,15 @@ def single_improved_model(model_params, iterations=1):
     RMSE /= iterations
     MAPE /= iterations
 
-    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_features.txt', **model_params)
+    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_features3.txt', **model_params)
 
 def main():
     model_params = {
         'features_lstm': 128,
         'features_dense': 25,
         'max_epochs': 100,
-        'batch_size': 4,
-        'learning_rate': 0.001, 
+        'batch_size': 8,
+        'learning_rate': 0.1, 
         'clipvalue': 1.0,
         'optimizer' : 'SGD'
     }
@@ -192,7 +208,7 @@ def main():
                 single_improved_model(model_params, 10)
     '''
 
-    for features_lstm in (10, 25, 50, 100, 150, 200):
+    for features_lstm in (250, ):
         model_params['features_lstm'] = features_lstm
         for batch_size, learning_rate, optimizer in ((1, 0.1, 'SGD'), (4, 0.001, 'Adam'), (8, 0.1, 'SGD')):
             model_params['batch_size'] = batch_size
@@ -203,7 +219,7 @@ def main():
     #data_analysis()
     #single_model()
     #single_delta_model()
-    #multi_model(model_params, 1)
+    multi_model(model_params, 1)
     #single_improved_model(model_params)
     
 if __name__ == '__main__':

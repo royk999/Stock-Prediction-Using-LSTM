@@ -1,18 +1,18 @@
-rmse: [3.89945682], MAPE: [1.96930127] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [4.55679274], MAPE: [2.28522895] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [4.33031544], MAPE: [2.17085935] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [3.70470794], MAPE: [1.87133922] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [5.00591526], MAPE: [2.57496594] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [4.11832856], MAPE: [2.08126698] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [3.70167056], MAPE: [1.87333509] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [4.84358969], MAPE: [2.46942145] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [3.81549082], MAPE: [1.93068776] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [3.72151257], MAPE: [1.88643743] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [5.02724043], MAPE: [2.53191317] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [3.68967349], MAPE: [1.8692754] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [3.77279031], MAPE: [1.91446543] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [5.06739498], MAPE: [2.55867625] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [3.62545782], MAPE: [1.83478075] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [3.64256833], MAPE: [1.84213918] - optimizer: SGD, batch_size: 1, learning_rate: 0.1
-rmse: [5.93364804], MAPE: [3.0681257] - optimizer: Adam, batch_size: 4, learning_rate: 0.001
-rmse: [3.56707019], MAPE: [1.80371494] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
+rmse: [3.89945682], MAPE: [1.96930127] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 10
+rmse: [4.55679274], MAPE: [2.28522895] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 10
+rmse: [4.33031544], MAPE: [2.17085935] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 10
+rmse: [3.70470794], MAPE: [1.87133922] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 25
+rmse: [5.00591526], MAPE: [2.57496594] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 25
+rmse: [4.11832856], MAPE: [2.08126698] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 25
+rmse: [3.70167056], MAPE: [1.87333509] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 50
+rmse: [4.84358969], MAPE: [2.46942145] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 50
+rmse: [3.81549082], MAPE: [1.93068776] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 50
+rmse: [3.72151257], MAPE: [1.88643743] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 100
+rmse: [5.02724043], MAPE: [2.53191317] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 100
+rmse: [3.68967349], MAPE: [1.8692754] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 100
+rmse: [3.77279031], MAPE: [1.91446543] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 150
+rmse: [5.06739498], MAPE: [2.55867625] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 150
+rmse: [3.62545782], MAPE: [1.83478075] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 150
+rmse: [3.64256833], MAPE: [1.84213918] - optimizer: SGD, batch_size: 1, learning_rate: 0.1, features_lstm: 200
+rmse: [5.93364804], MAPE: [3.0681257] - optimizer: Adam, batch_size: 4, learning_rate: 0.001, features_lstm: 200
+rmse: [3.56707019], MAPE: [1.80371494] - optimizer: SGD, batch_size: 8, learning_rate: 0.1, features_lstm: 200
