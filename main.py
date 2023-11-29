@@ -206,7 +206,6 @@ def main():
             for batch_size in (1, 4, 8, 16): 
                 model_params['batch_size'] = batch_size
                 single_improved_model(model_params, 10)
-    '''
 
     for features_lstm in (250, ):
         model_params['features_lstm'] = features_lstm
@@ -216,11 +215,13 @@ def main():
             model_params['optimizer'] = optimizer
             single_improved_model(model_params, 10)
 
+    '''
+
     #data_analysis()
     #single_model()
     #single_delta_model()
-    multi_model(model_params, 1)
-    #single_improved_model(model_params)
+    #multi_model(model_params, 1)
+    single_improved_model(model_params, 1)
     
 if __name__ == '__main__':
     main()

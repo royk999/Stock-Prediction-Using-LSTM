@@ -29,6 +29,10 @@ def multi_modify_df(stock_list, output_data, training_dataset_percentage, valida
     training_x_data = scaled_dataset[0:training_data_len, :]
     training_y_data = scaled_output_dataset[0:training_data_len, :]
 
+    # Replace NaN values with 0
+    training_x_data = np.nan_to_num(training_x_data)
+    training_y_data = np.nan_to_num(training_y_data)
+
     x_train = []
     y_train = []
 
@@ -48,6 +52,10 @@ def multi_modify_df(stock_list, output_data, training_dataset_percentage, valida
         x_val.append(validation_x_data[i:i+x_train_len, :])
         y_val.append(validation_y_data[i, :])
 
+    # Replace NaN values with 0
+    x_val = np.nan_to_num(x_val)
+    y_val = np.nan_to_num(y_val)
+
     # Convert the data to a numpy array
     x_val, y_val = np.array(x_val), np.array(y_val)
 
@@ -61,9 +69,15 @@ def multi_modify_df(stock_list, output_data, training_dataset_percentage, valida
         x_test.append(test_x_data[i:i+x_train_len, :])
         y_test.append(test_y_data[i, :])
         
+    # Replace NaN values with 0
+    x_test = np.nan_to_num(x_test)
+    y_test = np.nan_to_num(y_test)
+
     # Convert the data to a numpy array
     x_test, y_test = np.array(x_test), np.array(y_test)
     
+    
+        
     return x_train, y_train, x_val, y_val, x_test, y_test, scaler
 
 

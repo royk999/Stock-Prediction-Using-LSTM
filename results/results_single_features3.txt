@@ -13,3 +13,4 @@ rmse: [3.59228132], MAPE: [1.815465] - features_lstm: 350, optimizer: SGD, batch
 rmse: [3.59728551], MAPE: [1.80907144] - features_lstm: 400, optimizer: SGD, batch_size: 1, learning_rate: 0.1
 rmse: [4.74758354], MAPE: [2.36794976] - features_lstm: 400, optimizer: Adam, batch_size: 4, learning_rate: 0.001
 rmse: [3.56560424], MAPE: [1.8006983] - features_lstm: 400, optimizer: SGD, batch_size: 8, learning_rate: 0.1
+rmse: [3.6299725], MAPE: [1.83479376] - features_lstm: 128, optimizer: SGD, batch_size: 8, learning_rate: 0.1
