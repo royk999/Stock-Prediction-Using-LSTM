@@ -10,9 +10,9 @@ from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from keras.callbacks import EarlyStopping
 
-np.random.seed(42)
+np.random.seed(15)
 
-def single_improved_modify_df(df, training_dataset_percentage, validation_dataset_percentage, x_train_len):   
+def single_improved_modify_df(df, training_dataset_percentage=0.8, validation_dataset_percentage=0.1, x_train_len=60):   
     len_data = len(df) - x_train_len + 1
 
     dataset = df.filter(['Close']).values
@@ -72,7 +72,6 @@ def single_improved_model_train(x_train, y_train, x_val, y_val, features_lstm = 
 
     model = Sequential()
     model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
-    model.add(Dense(features_dense, activation='linear'))
     model.add(Dense(1, activation='linear'))
     model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
 
@@ -90,30 +89,30 @@ def predict_single_improved_model(model, x_test, y_test, scalar):
     y_test = scalar.inverse_transform(y_test) # Undo scaling
     return predictions, y_test
 
-def analyze_single_improved(y_test, predictions, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
-    rmse = 0
-    MAPE = 0
-
-    sz = len(predictions)
-    for i in range(sz):
-        rmse += (predictions[i] - y_test[i]) ** 2
-        MAPE = MAPE + abs((predictions[i] - y_test[i]) / y_test[i])
+def analyze_single_improved(y_test, predictions):
+    profit_model = 0
+    profit_random = 0
     
-    rmse = np.sqrt(rmse / sz)
-    MAPE = MAPE * 100 / sz
+    sz = len(predictions)
 
-    print(f'Root Mean Square Error: {rmse}')
-    print(f'MAPE: {MAPE}')
-    with open('results/results_single_improved_model.txt', 'a') as f:
-        f.write(f'rmse: {rmse}, MAPE: {MAPE} - features_lstm: {features_lstm}, feature_dense: {features_dense}, optimizer: {optimizer}, batch_size: {batch_size}, learning_rate: {learning_rate}, clipvalue: {clipvalue}\n')
+    for i in range(0, sz-1):
+        if predictions[i+1] - y_test[i] > 0:
+            profit_model += y_test[i+1] - y_test[i]
+        
+        rand_int = np.random.randint(0, 10)
+        if rand_int % 2 <= 4:
+            profit_random += y_test[i+1] - y_test[i]
 
-    plt.plot(y_test, label='Actual')
-    plt.plot(predictions, label='Predicted')
-    plt.legend()
-    plt.title('Single_Improved Model')
-    plt.xlabel('Date from 2020-10-30 (days)')
-    plt.ylabel('Close Price ($)')    
-    plt.savefig('images/results_single_improved_model.png')
+    accuracy = 0.0
+
+    for i in range(0, sz-1):
+        if (predictions[i+1] - predictions[i]) * (y_test[i+1] - y_test[i]) > 0:
+            accuracy += 1
+    
+    accuracy = accuracy / (sz-1)
+
+    return profit_model, profit_random, accuracy
+
 
 def evaluate_single_improved(rmse, mape, path = 'results/results_single_improved_model.txt', features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
     print(f'rmse: {rmse}, MAPE: {mape}')
@@ -140,3 +139,12 @@ def return_metrics_single_improved(y_test, predictions):
     MAPE = MAPE * 100 / sz
 
     return RMSE, MAPE
+
+
+def predict_singular(model, x_test, scaler):
+    # Get the models predicted price values 
+    predictions = model.predict(x_test)
+    predictions = scaler.inverse_transform(predictions)
+
+    return predictions
+

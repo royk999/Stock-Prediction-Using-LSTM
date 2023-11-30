@@ -122,10 +122,20 @@ def analyze_singular(y_test, predictions):
     plt.plot(y_test_delta, label='Actual')
     plt.plot(predictions_delta, label='Predicted')
     plt.legend()
-    plt.title(f'Single_Model_Delta(1)')
+    plt.title(f'Single_Improved_Model_Delta_Predictions')
     plt.xlabel('Date from 2020-10-30 (days)')
     plt.ylabel('Close Price ($)')
     # Save graph as png file in a folder named images
-    plt.savefig('images/results_single_model_delta(1).png')
+    plt.savefig('images/results_single_improved_Delta.png')
+
+
+    plt.plot(y_test, label='Actual')
+    plt.plot(predictions, label='Predicted')
+    plt.legend()
+    plt.title(f'Single_Improved_Model_Predictions')
+    plt.xlabel('Date from 2020-10-30 (days)')
+    plt.ylabel('Close Price ($)')
+    # Save graph as png file in a folder named images
+    plt.savefig('images/results_single_improved_Closing_Price.png')
 
 

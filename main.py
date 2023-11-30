@@ -105,7 +105,7 @@ def single_delta_model():
     model_path = 'model_trained/single_delta_model.keras'
     model = load_model(model_path)
     #model = single_delta_model_train(x_train, y_train, **model_params)
-    #model.save(model_path) # save the model to a file
+    #model.save(model_path) #save the model to a file
     predictions = predict_single_delta(model, x_test, scalar)
     analyze_single_delta(y_test, predictions, scalar, **model_params)
 
@@ -170,10 +170,10 @@ def single_improved_model(model_params, iterations=1):
     for i in range(iterations):
         print(f'Iteration {i+1} of {iterations}')
 
-        #model = load_model(model_path)
-        model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
+        model = load_model(model_path)
+        #model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
 
-        model.save(model_path)
+        #model.save(model_path)
 
         predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
 
@@ -181,18 +181,25 @@ def single_improved_model(model_params, iterations=1):
 
         RMSE += rmse
         MAPE += mape
-    
+
+
     RMSE /= iterations
     MAPE /= iterations
 
-    evaluate_single_improved(RMSE, MAPE, path = 'results/results_single_features3.txt', **model_params)
+    path = 'results/results_single_improved_profits.txt'
+    evaluate_single_improved(RMSE, MAPE, path = path, **model_params)
+    profit_model, profit_random, accuracy = analyze_single_improved(y_test_scaled, predictions)
+
+    print(f'Profit model: {profit_model}, Profit random: {profit_random}, Accuracy: {accuracy}', file=open(path, 'a'))
+
+    analyze_singular(y_test_scaled, predictions)
+
 
 def main():
     model_params = {
-        'features_lstm': 128,
-        'features_dense': 25,
+        'features_lstm': 700,
         'max_epochs': 100,
-        'batch_size': 8,
+        'batch_size': 16,
         'learning_rate': 0.1, 
         'clipvalue': 1.0,
         'optimizer' : 'SGD'
