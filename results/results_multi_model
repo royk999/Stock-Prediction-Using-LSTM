@@ -1,2 +1,1 @@
-rmse: [4.3455554], MAPE: [6.12736206] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
-rmse: [4.34284275], MAPE: [6.00390606] - optimizer: SGD, batch_size: 8, learning_rate: 0.1
+rmse: [17.45413361], MAPE: [16.83390271] - optimizer: SGD, batch_size: 16, learning_rate: 0.1

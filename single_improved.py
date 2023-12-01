@@ -92,6 +92,7 @@ def predict_single_improved_model(model, x_test, y_test, scalar):
 def analyze_single_improved(y_test, predictions):
     profit_model = 0
     profit_random = 0
+    profit_always = 0
     
     sz = len(predictions)
 
@@ -100,18 +101,35 @@ def analyze_single_improved(y_test, predictions):
             profit_model += y_test[i+1] - y_test[i]
         
         rand_int = np.random.randint(0, 10)
-        if rand_int % 2 <= 4:
+        if rand_int % 2 == 0:
             profit_random += y_test[i+1] - y_test[i]
 
+        profit_always += y_test[i+1] - y_test[i]
+
+    profit_model_rate = 100
+    profit_random_rate = 100
+    profit_always_rate = 100
+
+    for i in range(0, sz-1):
+        if predictions[i+1] - predictions[i] > 0:
+            profit_model_rate *= y_test[i+1] / y_test[i]
+        
+        rand_int = np.random.randint(0, 10)
+        if rand_int % 2 == 0:
+            profit_random_rate *= y_test[i+1] / y_test[i]
+
+        profit_always_rate *= y_test[i+1] / y_test[i]
+    
     accuracy = 0.0
 
     for i in range(0, sz-1):
-        if (predictions[i+1] - predictions[i]) * (y_test[i+1] - y_test[i]) > 0:
+        if (predictions[i+1] - y_test[i]) * (y_test[i+1] - y_test[i]) > 0:
             accuracy += 1
     
     accuracy = accuracy / (sz-1)
 
-    return profit_model, profit_random, accuracy
+
+    return profit_model, profit_random, profit_always, profit_model_rate, profit_random_rate, profit_always_rate, accuracy
 
 
 def evaluate_single_improved(rmse, mape, path = 'results/results_single_improved_model.txt', features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs = 1, batch_size=1, learning_rate=0.001, clipvalue=1.0):

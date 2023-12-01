@@ -62,7 +62,13 @@ set 3: optimizer: SGD, batch_size: 8, learning_rate: 0.1
 ## 다변수 LSTM 모델 최적화하기
 다변수 LSTM 모델 구현 시 문제점이 있었다. 
 
+## 성능 비교
+기존의 Kaggle 실습용 코드와의 성능을 비교해보았다.
+Kaggle Model: rmse: [7.74578395]
+Optimized Model: rmse: [3.54291136]
 
 
+Kaggle Model: MAPE: [4.22778489] 
+Optimized Model: MAPE: [1.78532436]
 
 

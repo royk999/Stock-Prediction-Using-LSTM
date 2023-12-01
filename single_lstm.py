@@ -8,6 +8,8 @@ from datetime import datetime
 from sklearn.preprocessing import MinMaxScaler # for data scaling
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
+from keras.callbacks import EarlyStopping
+
 
 np.random.seed(42)
 
@@ -69,19 +71,24 @@ def modify_df_singular(df, training_dataset_percentage, x_train_len):
 
     return x_train, y_train, x_test, y_test, scaler
 
-def single_model_train(x_train, y_train):
+def single_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, features_dense = 25, optimizer = 'Adam', max_epochs=1, batch_size=1, learning_rate=0.001, clipvalue=1.0):
+    if np.any(np.isnan(x_train)) or np.any(np.isnan(y_train)):
+        print("NaN values found in training data. Please clean your data.")
+        return None
+    if np.any(np.isinf(x_train)) or np.any(np.isinf(y_train)):
+        print("Inf values found in training data. Please clean your data.")
+        return None
+
+
     model = Sequential()
     model.add(LSTM(128, return_sequences=True, input_shape= (x_train.shape[1], 1)))
     model.add(LSTM(64, return_sequences=False))
     model.add(Dense(25))
     model.add(Dense(1))
+
+    model.compile(optimizer=optimizer, loss='mean_squared_error')
     
-
-    # Compile the model
-    model.compile(optimizer='adam', loss='mean_squared_error')
-
-    # Train the model
-    model.fit(x_train, y_train, batch_size=1, epochs=1)
+    model.fit(x_train, y_train, batch_size=batch_size, epochs=max_epochs, validation_data=(x_val, y_val), shuffle=True)
 
     return model
 
@@ -92,7 +99,7 @@ def predict_singular(model, x_test, scaler):
 
     return predictions
 
-def analyze_singular(y_test, predictions):
+def analyze_singular(y_test, predictions, name):
     #turn y_test into a dataframe
     y_test = pd.DataFrame(y_test)
     predictions = pd.DataFrame(predictions)
@@ -119,23 +126,14 @@ def analyze_singular(y_test, predictions):
         f.write(f'RMSE_original: {rmse}\n')
         f.write(f'RMSE_delta_1: {rmse_1}')
     
-    plt.plot(y_test_delta, label='Actual')
-    plt.plot(predictions_delta, label='Predicted')
-    plt.legend()
-    plt.title(f'Single_Improved_Model_Delta_Predictions')
-    plt.xlabel('Date from 2020-10-30 (days)')
-    plt.ylabel('Close Price ($)')
-    # Save graph as png file in a folder named images
-    plt.savefig('images/results_single_improved_Delta.png')
-
 
     plt.plot(y_test, label='Actual')
     plt.plot(predictions, label='Predicted')
     plt.legend()
-    plt.title(f'Single_Improved_Model_Predictions')
-    plt.xlabel('Date from 2020-10-30 (days)')
+    plt.title(f'Optimized_Model_Predictions')
+    plt.xlabel('Date from 2021-10-30 (days)')
     plt.ylabel('Close Price ($)')
     # Save graph as png file in a folder named images
-    plt.savefig('images/results_single_improved_Closing_Price.png')
+    plt.savefig(name)
 
 

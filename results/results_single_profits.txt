@@ -1,0 +1,28 @@
+rmse: [4.59049932], MAPE: [2.35778212] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [24.69001007], Profit random: [11.32000732], Accuracy: 0.4784172661870504
+rmse: [4.75351209], MAPE: [2.29766848] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [21.82998657], Profit random: [11.32000732], Accuracy: 0.4676258992805755
+rmse: [4.50772431], MAPE: [2.3200409] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [13.32001495], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.04127307], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338
+rmse: [5.17101937], MAPE: [2.50488306] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [15.92001343], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.03389274], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4748201438848921
+rmse: [4.21641606], MAPE: [2.09543592] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+rmse: [8.57430761], MAPE: [4.71918951] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [4.66999054], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.07973983], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4676258992805755
+rmse: [4.27750917], MAPE: [2.11904383] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [1.65000916], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.07629772], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338
+rmse: [7.74578395], MAPE: [4.22778489] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [20.01997375], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.08367805], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4676258992805755
+rmse: [4.75516522], MAPE: [2.29171549] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [20.01997375], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.08367805], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4676258992805755
+rmse: [4.24948178], MAPE: [2.11559825] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [5.53001404], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.07629772], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338
+rmse: [5.0700613], MAPE: [2.61584973] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [43.7100296], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.07629772], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338
+rmse: [9.05362124], MAPE: [4.96920927] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [4.04999542], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.08367805], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4676258992805755
+rmse: [8.95177935], MAPE: [4.82571827] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [7.18999481], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.08427345], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338
+rmse: [8.95177935], MAPE: [4.82571827] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+rmse: [8.95177935], MAPE: [4.82571827] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [7.18999481], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [-0.08427345], Profit Random Rate: [0.02908306], profit_always_rate: [0.11027211] Accuracy: 0.4712230215827338

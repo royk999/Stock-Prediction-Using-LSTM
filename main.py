@@ -65,22 +65,45 @@ def data_analysis():
    
     #create_graph_correlation(combined_name, combined_list, 'Combined Correlation')
 
-def single_model():
-    end = datetime(2022, 10, 30)
-    start = datetime(2012, 5, 30)
-    stock_name = "AAPL"
-    df = get_df_singular(stock_name, start, end)
-    x_train, y_train, x_test, y_test, scalar = modify_df_singular(df, 0.8, 60) # training_dataset_percentage = 0.8, x_train_len = 60
-    
-    #model = single_model_train(x_train, y_train)
-    #model.save('single_model.keras') # save the model to a file
+def single_model(model_params, iterations=1):
+    stock_name = ['AAPL']
+    end = datetime(2023, 10, 30)
+    start = datetime(2012, 10, 30)
+
+    df = get_df(stock_name, start, end)
+
+    x_train, y_train, x_val, y_val, x_test, y_test, scalar = single_improved_modify_df(df[0], training_dataset_percentage=0.8, validation_dataset_percentage = 0.1, x_train_len=5)
 
     model_path = 'model_trained/single_model.keras'
-    model = load_model(model_path)
 
-    predictions = predict_singular(model, x_test, scalar)
+    RMSE = 0
+    MAPE = 0
+    
+    for i in range(iterations):
+        print(f'Iteration {i+1} of {iterations}')
 
-    analyze_singular(y_test, predictions)
+        model = load_model(model_path)
+        #model = single_model_train(x_train, y_train, x_val, y_val)
+
+        #model.save(model_path)
+
+        predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
+
+        rmse, mape = return_metrics_single_improved(y_test_scaled, predictions)
+
+        RMSE += rmse
+        MAPE += mape
+
+    RMSE /= iterations
+    MAPE /= iterations
+
+    path = 'results/results_single_profits.txt'
+    evaluate_single_improved(RMSE, MAPE, path = path, **model_params)
+    profit_model, profit_random, profit_always, profit_model_rate, profit_random_rate, profit_always_rate, accuracy = analyze_single_improved(y_test_scaled, predictions)
+
+    analyze_singular(y_test_scaled, predictions, 'results/results_Kaggle_model.png')
+
+    print(f'Profit model: {profit_model}, Profit random: {profit_random}, Profit Always: {profit_always}, Profit Model Rate: {profit_model_rate}, Profit Random Rate: {profit_random_rate}, profit_always_rate: {profit_always_rate} Accuracy: {accuracy}', file=open(path, 'a'))
 
 def single_delta_model():
     end = datetime(2022, 10, 30)
@@ -110,9 +133,9 @@ def single_delta_model():
     analyze_single_delta(y_test, predictions, scalar, **model_params)
 
 def multi_model(model_params, iterations=1):
-    stock_name = ['AAPL', 'DX-Y.NYB']
+    stock_name = ['AAPL', 'DX-Y.NYB', 'MSFT', 'BTC-USD', '^IXIC', 'GOOG', 'AMZN', 'FB', 'TSLA', 'NFLX']
     end = datetime(2023, 10, 30)
-    start = datetime(2012, 10, 30)
+    start = datetime(2016, 10, 30)
 
     stock_list = get_df(stock_name, start, end)
 
@@ -171,9 +194,9 @@ def single_improved_model(model_params, iterations=1):
         print(f'Iteration {i+1} of {iterations}')
 
         model = load_model(model_path)
-        #model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
+        model = single_improved_model_train(x_train, y_train, x_val, y_val, **model_params)
 
-        #model.save(model_path)
+        model.save(model_path)
 
         predictions, y_test_scaled = predict_single_improved_model(model, x_test, y_test, scalar)
 
@@ -188,11 +211,11 @@ def single_improved_model(model_params, iterations=1):
 
     path = 'results/results_single_improved_profits.txt'
     evaluate_single_improved(RMSE, MAPE, path = path, **model_params)
-    profit_model, profit_random, accuracy = analyze_single_improved(y_test_scaled, predictions)
+    profit_model, profit_random, profit_always, profit_model_rate, profit_random_rate, profit_always_rate, accuracy = analyze_single_improved(y_test_scaled, predictions)
 
-    print(f'Profit model: {profit_model}, Profit random: {profit_random}, Accuracy: {accuracy}', file=open(path, 'a'))
+    print(f'Profit model: {profit_model}, Profit random: {profit_random}, Profit Always: {profit_always}, Profit Model Rate: {profit_model_rate}, Profit Random Rate: {profit_random_rate}, profit_always_rate: {profit_always_rate} Accuracy: {accuracy}', file=open(path, 'a'))
 
-    analyze_singular(y_test_scaled, predictions)
+    analyze_singular(y_test_scaled, predictions, 'results/results_optimized_model.png')
 
 
 def main():
@@ -225,10 +248,10 @@ def main():
     '''
 
     #data_analysis()
-    #single_model()
+    #single_model(model_params, 1)
     #single_delta_model()
     #multi_model(model_params, 1)
     single_improved_model(model_params, 1)
-    
+
 if __name__ == '__main__':
     main()

@@ -1,21 +1,5 @@
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [-25.10002899]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [2.40006256]
-
--> 여기까지가 랜덤으로 여러 번 시행했을 때의 결과.  
-================
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732]
-rmse: [3.58437492], MAPE: [1.81257921] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
-Profit model: [7.61000824], Profit random: [11.32000732], Accuracy: 0.4892086330935252
+Profit model: [7.61000824], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [96.0500057], Profit Random Rate: [100.83437335], profit_always_rate: [107.21479144] Accuracy: 0.4892086330935252
+rmse: [4.23387671], MAPE: [2.17185323] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [13.70001984], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [94.50988888], Profit Random Rate: [100.83437335], profit_always_rate: [107.21479144] Accuracy: 0.49640287769784175
+rmse: [3.5906534], MAPE: [1.81446207] - features_lstm: 700, optimizer: SGD, batch_size: 16, learning_rate: 0.1
+Profit model: [9.56000519], Profit random: [2.40006256], Profit Always: [11.32000732], Profit Model Rate: [93.04204814], Profit Random Rate: [100.83437335], profit_always_rate: [107.21479144] Accuracy: 0.48201438848920863
