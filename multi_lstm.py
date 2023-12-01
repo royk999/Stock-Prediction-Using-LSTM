@@ -94,7 +94,7 @@ def multi_model_train(x_train, y_train, x_val, y_val, features_lstm = 128, featu
     model = Sequential()
     model.add(LSTM(features_lstm, return_sequences=False, input_shape=(x_train.shape[1], x_train.shape[2])))
     model.add(Dense(1, activation='linear'))
-    model.compile(optimizer=optimizer, loss='mean_squared_error', metrics = ['MAPE'])
+    model.compile(optimizer=optimizer, loss='mean_squared_error')
 
     early_stopper = EarlyStopping(monitor='loss', patience=10, verbose=1)
 

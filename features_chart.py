@@ -56,8 +56,14 @@ ax.set_ylabel('RMSE')
 ax.set_title('RMSE: Kaggle Model vs Optimized Model')
 ax.set_ylim(0, max(rmse_values) + 1)  # Setting the y-axis limit a bit higher for better visualization
 
+# Add text labels for the values
+for i, value in enumerate(rmse_values):
+    ax.text(i, value, str(round(value, 3)), ha='center', va='bottom')
+
 # Display the plot
 plt.savefig('images/rmse_comparison.png')
+
+
 
 # Data for the MAPE comparison
 mape_values = [4.22778489, 1.78532436]
@@ -68,8 +74,13 @@ ax.bar(models, mape_values, color=['blue', 'orange'])
 
 # Add labels and title
 ax.set_ylabel('MAPE')
-ax.set_title('MAPE Comparison between Models')
+ax.set_title('MAPE: Kaggle Model vs Optimized Model')
 ax.set_ylim(0, max(mape_values) + 1)  # Setting the y-axis limit a bit higher for better visualization
+
+# Add text labels for the values
+for i, value in enumerate(mape_values):
+    ax.text(i, value, str(round(value, 3)), ha='center', va='bottom')
 
 # Display the plot
 plt.savefig('images/mape_comparison.png')
+

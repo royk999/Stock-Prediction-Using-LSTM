@@ -111,10 +111,6 @@ def single_delta_model():
     stock_name = "AAPL"
     df = get_df_singular(stock_name, start, end)
     x_train, y_train, x_test, y_test, scalar = modify_df_single_delta(df, training_dataset_percentage=0.8, x_train_len=60) # training_dataset_percentage, x_train_len = 60
-    print(f'min x_train val: {x_train.min()}')
-    print(f'min y_train val: {y_train.min()}')
-    print(f'min x_test val: {x_test.min()}')
-    print(f'min y_test val: {y_test.min()}')
 
     model_params = {
         'features_lstm': 10,
@@ -127,8 +123,8 @@ def single_delta_model():
 
     model_path = 'model_trained/single_delta_model.keras'
     model = load_model(model_path)
-    #model = single_delta_model_train(x_train, y_train, **model_params)
-    #model.save(model_path) #save the model to a file
+    model = single_delta_model_train(x_train, y_train, **model_params)
+    model.save(model_path) #save the model to a file
     predictions = predict_single_delta(model, x_test, scalar)
     analyze_single_delta(y_test, predictions, scalar, **model_params)
 
@@ -138,7 +134,7 @@ def multi_model(model_params, iterations=1):
     start = datetime(2016, 10, 30)
 
     stock_list = get_df(stock_name, start, end)
-
+    
     combined_list = []
     
     for stock in stock_list:
@@ -250,8 +246,8 @@ def main():
     #data_analysis()
     #single_model(model_params, 1)
     #single_delta_model()
-    #multi_model(model_params, 1)
-    single_improved_model(model_params, 1)
+    multi_model(model_params, 1)
+    #single_improved_model(model_params, 1)
 
 if __name__ == '__main__':
     main()

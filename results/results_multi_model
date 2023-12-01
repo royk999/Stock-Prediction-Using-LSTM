@@ -1,1 +1,2 @@
 rmse: [17.45413361], MAPE: [16.83390271] - optimizer: SGD, batch_size: 16, learning_rate: 0.1
+rmse: [18.90125368], MAPE: [18.21118079] - optimizer: SGD, batch_size: 16, learning_rate: 0.1
